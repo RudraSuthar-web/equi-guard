@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import {
   Shield,
   ShieldCheck,
@@ -142,7 +143,7 @@ export default function Home() {
           className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full opacity-20 blur-[120px]"
           style={{
             background:
-              "radial-gradient(circle, rgba(99,102,241,0.4) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, transparent 70%)",
           }}
         />
         {/* Bottom-right glow */}
@@ -150,7 +151,7 @@ export default function Home() {
           className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full opacity-15 blur-[100px]"
           style={{
             background:
-              "radial-gradient(circle, rgba(139,92,246,0.4) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(175, 175, 175, 0.4) 0%, transparent 70%)",
           }}
         />
         {/* Grid pattern */}
@@ -158,7 +159,7 @@ export default function Home() {
           className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+              "linear-gradient(rgba(45, 45, 45, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
             backgroundSize: "64px 64px",
           }}
         />
@@ -178,11 +179,15 @@ export default function Home() {
               EquiGuard
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-white/5 border border-white/8 px-3 py-1.5 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               AI Bias Detector
             </span>
+            <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-4 py-1.5 rounded-full hover:bg-indigo-500/15 transition-all">
+              Dashboard
+              <ArrowRight className="w-3 h-3" />
+            </Link>
           </div>
         </nav>
 
