@@ -22,7 +22,7 @@ export default function SettingsPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <PageHeader title="Settings" description="Configure your preferences and analysis options."
-        action={<button className="inline-flex items-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05]"><Save className="w-4 h-4" />Save Changes</button>}
+        action={<button className="inline-flex items-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-4 py-2.5 md:px-5 md:py-2.5 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05]"><Save className="w-4 h-4" /></button>}
       />
       <div className="space-y-6">
         {/* Appearance */}

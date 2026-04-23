@@ -1,18 +1,47 @@
-from fastapi import FastAPI
+import os
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List, Optional
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Configure Gemini API
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY or GEMINI_API_KEY == "":
+    print("WARNING: GEMINI_API_KEY not set or is placeholder")
+
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel(
+    'gemini-2.5-flash-lite',
+    system_instruction="You are EquiGuard's AI Assistant. Provide short, direct, and factual answers about bias detection and fairness. Use Markdown formatting: use bullet points on new lines for lists, and use bold text for key terms. Avoid long paragraphs but ensure points are separated by new lines for readability. Do not hallucinate."
+)
+
+
+
 
 app = FastAPI(title="EquiGuard API")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 class ResumeInput(BaseModel):
     resume_text: str
+
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
+class ChatInput(BaseModel):
+    messages: List[ChatMessage]
 
 @app.get("/")
 def root():
@@ -27,6 +56,33 @@ def evaluate(input: ResumeInput):
         "bias_gap": 13,
         "verdict": "BIAS DETECTED"
     }
+
+@app.post("/chat")
+async def chat(input: ChatInput):
+    if not GEMINI_API_KEY or GEMINI_API_KEY == "your_key_here":
+        return {"role": "assistant", "content": "I'm sorry, but my AI core is not configured (missing API key). Please set the GEMINI_API_KEY in the backend .env file."}
+
+    try:
+        # Convert messages to Gemini format
+        history = []
+        for msg in input.messages[:-1]:
+            history.append({"role": "user" if msg.role == "user" else "model", "parts": [msg.content]})
+        
+        last_message = input.messages[-1].content
+        
+        chat_session = model.start_chat(history=history)
+        response = chat_session.send_message(last_message)
+        
+        return {"role": "assistant", "content": response.text}
+    except Exception as e:
+        error_msg = str(e)
+        print(f"Error in chat: {error_msg}")
+        if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+            return {"role": "assistant", "content": "I'm sorry, but it looks like the Gemini API quota has been exhausted. Please check your API usage or try again later."}
+        if "401" in error_msg or "API_KEY_INVALID" in error_msg:
+            return {"role": "assistant", "content": "I'm sorry, but the Gemini API key provided is invalid. Please check the backend .env file."}
+        raise HTTPException(status_code=500, detail=error_msg)
+
 
 @app.get("/logs")
 def get_logs():

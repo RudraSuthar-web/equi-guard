@@ -13,9 +13,9 @@ export default function BiasDetectionPage() {
   const { contentRgb, theme } = useTheme();
   const cr = contentRgb;
   const selectionRateData = [
-    { name: "Male", value: 68, color: theme === "dark" ? "#ffffff" : "#000000" },
-    { name: "Female", value: 45, color: theme === "dark" ? "#888888" : "#666666" },
-    { name: "Non-Binary", value: 38, color: theme === "dark" ? "#444444" : "#aaaaaa" },
+    { name: "Male", value: 68, color: "var(--primary)" },
+    { name: "Female", value: 45, color: "var(--secondary-foreground)" },
+    { name: "Non-Binary", value: 38, color: "var(--muted-foreground)" },
   ];
 
   const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ name: string; value: number }> }) => {
@@ -40,7 +40,7 @@ export default function BiasDetectionPage() {
               <div className="relative">
                 <svg className="w-32 h-32 -rotate-90" viewBox="0 0 120 120">
                   <circle cx="60" cy="60" r="52" fill="none" stroke={`rgba(${cr},0.04)`} strokeWidth="8" />
-                  <circle cx="60" cy="60" r="52" fill="none" stroke={`rgba(${cr},0.6)`} strokeWidth="8" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 52}`} strokeDashoffset={`${2 * Math.PI * 52 * (1 - 0.72)}`} />
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="var(--primary)" strokeWidth="8" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 52}`} strokeDashoffset={`${2 * Math.PI * 52 * (1 - 0.72)}`} />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center"><span className="text-4xl font-bold text-content">0.72</span></div>
               </div>

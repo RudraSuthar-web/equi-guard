@@ -16,7 +16,7 @@ export default function ModelEvaluationPage() {
 
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) => {
     if (active && payload && payload.length) {
-      return (<div className="glass-card rounded-lg p-3 text-xs border border-content/10"><p className="text-content font-medium">{label}: {payload[0].value}%</p></div>);
+      return (<div className="glass-card rounded-lg p-3 text-xs border border-content/10" style={{ background: `var(--content-800)` }}><p className="text-content font-medium">{label}: {payload[0].value}%</p></div>);
     }
     return null;
   };
@@ -33,7 +33,7 @@ export default function ModelEvaluationPage() {
             <div className="relative">
               <svg className="w-36 h-36 -rotate-90" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="52" fill="none" stroke={`rgba(${cr},0.04)`} strokeWidth="8" />
-                <circle cx="60" cy="60" r="52" fill="none" stroke={`rgba(${cr},0.5)`} strokeWidth="8" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 52}`} strokeDashoffset={`${2 * Math.PI * 52 * (1 - 0.68)}`} />
+                <circle cx="60" cy="60" r="52" fill="none" stroke="var(--primary)" strokeWidth="8" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 52}`} strokeDashoffset={`${2 * Math.PI * 52 * (1 - 0.68)}`} />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-3xl font-bold text-content">0.68</span>
@@ -51,15 +51,15 @@ export default function ModelEvaluationPage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 glass-card rounded-xl p-6">
-          <h3 className="text-sm font-semibold text-content mb-1">Accuracy by Group</h3>
-          <p className="text-xs text-content/30 mb-6">Model accuracy broken down by demographic group</p>
+          <h3 className="text-sm font-semibold text-content mb-3">Accuracy by Group</h3>
+          <p className="text-xs text-content/30 mb-20">Model accuracy broken down by demographic group</p>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={accuracyByGroup} barSize={32}>
               <CartesianGrid strokeDasharray="3 3" stroke={`rgba(${cr},0.04)`} />
               <XAxis dataKey="group" tick={{ fill: `rgba(${cr},0.35)`, fontSize: 11 }} axisLine={{ stroke: `rgba(${cr},0.06)` }} tickLine={false} />
               <YAxis tick={{ fill: `rgba(${cr},0.35)`, fontSize: 11 }} axisLine={{ stroke: `rgba(${cr},0.06)` }} tickLine={false} domain={[0, 100]} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="accuracy" fill={`rgba(${cr},0.35)`} radius={[4, 4, 0, 0]} />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: `rgba(${cr},0.04)` }} />
+              <Bar dataKey="accuracy" fill="var(--primary)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

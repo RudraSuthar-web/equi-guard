@@ -128,7 +128,7 @@ export default function LandingPage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-content tracking-tight mb-4">Three Steps to<br /><span className="gradient-text">Unbiased Systems</span></h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {steps.map((step, i) => (<div key={step.number} className="relative glass-card rounded-2xl p-8 text-center animate-fade-in-up group" style={{ animationDelay: `${i * 150}ms` }}><div className="text-5xl font-black text-content/[0.06] mb-4 group-hover:text-content/[0.1] transition-colors">{step.number}</div><h3 className="text-base font-semibold text-content mb-3">{step.title}</h3><p className="text-sm text-content/40 leading-relaxed">{step.description}</p>{i < steps.length - 1 && (<div className="hidden md:block absolute top-1/2 -right-3 -translate-y-1/2 z-10"><ChevronRight className="w-5 h-5 text-content/15" /></div>)}</div>))}
+            {steps.map((step, i) => (<div key={step.number} className="relative glass-card rounded-2xl p-8 text-center animate-fade-in-up group" style={{ animationDelay: `${i * 150}ms` }}><div className="text-5xl font-black text-content/[0.05] mb-4 group-hover:text-content/[0.1] transition-colors">{step.number}</div><h3 className="text-xl font-semibold text-content mb-3">{step.title}</h3><p className="text-sm text-content/40 leading-relaxed">{step.description}</p>{i < steps.length - 1 && (<div className="hidden md:block absolute top-1/2 -right-3 -translate-y-1/2 z-10"><ChevronRight className="w-5 h-5 text-content/15" /></div>)}</div>))}
           </div>
         </div>
       </section>

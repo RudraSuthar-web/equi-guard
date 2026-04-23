@@ -1,7 +1,7 @@
 "use client";
 
 import { PageHeader } from "@/components/page-components";
-import { Upload as UploadIcon, FileText, Columns, HardDrive, Lightbulb, ArrowRight, Check, CloudUpload } from "lucide-react";
+import { Upload as UploadIcon, FileText, Columns, HardDrive, Lightbulb, ArrowRight, Check, CloudUpload, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 const aboutItems = [
@@ -41,9 +41,41 @@ export default function UploadPage() {
             <h3 className="text-sm font-semibold text-content mb-1">Configure Analysis</h3>
             <p className="text-xs text-content/30 mb-5">Target variable (What are we predicting?)</p>
             <div className="space-y-4">
-              <div><label className="block text-xs font-medium text-content/50 mb-1.5">Target Variable</label><select value={targetVar} onChange={(e) => setTargetVar(e.target.value)} className="w-full bg-content/[0.03] border border-content/[0.08] rounded-lg px-3 py-2.5 text-sm text-content/80 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all appearance-none"><option value="">Select target variable</option><option value="hired">hired</option><option value="approved">approved</option><option value="selected">selected</option></select></div>
-              <div><label className="block text-xs font-medium text-content/50 mb-1.5">Protected Attributes (bias concern)</label><select value={protectedAttr} onChange={(e) => setProtectedAttr(e.target.value)} className="w-full bg-content/[0.03] border border-content/[0.08] rounded-lg px-3 py-2.5 text-sm text-content/80 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all appearance-none"><option value="">Select protected attributes</option><option value="gender">gender</option><option value="race">race</option><option value="age">age</option></select></div>
-              <div><label className="block text-xs font-medium text-content/50 mb-1.5">Prediction Column (optional)</label><select value={prediction} onChange={(e) => setPrediction(e.target.value)} className="w-full bg-content/[0.03] border border-content/[0.08] rounded-lg px-3 py-2.5 text-sm text-content/80 focus:outline-none focus:border-content/30 focus:ring-2 focus:ring-content/10 transition-all appearance-none"><option value="">Upload predictions CSV (optional)</option><option value="prediction">prediction</option><option value="score">score</option></select></div>
+              <div>
+                <label className="block text-xs font-medium text-content/50 mb-1.5">Target Variable</label>
+                <div className="relative">
+                  <select value={targetVar} onChange={(e) => setTargetVar(e.target.value)} className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-sm text-content/80 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all appearance-none cursor-pointer">
+                    <option value="" className="bg-background text-foreground">Select target variable</option>
+                    <option value="hired" className="bg-background text-foreground">hired</option>
+                    <option value="approved" className="bg-background text-foreground">approved</option>
+                    <option value="selected" className="bg-background text-foreground">selected</option>
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-content/30 pointer-events-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-content/50 mb-1.5">Protected Attributes (bias concern)</label>
+                <div className="relative">
+                  <select value={protectedAttr} onChange={(e) => setProtectedAttr(e.target.value)} className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-sm text-content/80 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all appearance-none cursor-pointer">
+                    <option value="" className="bg-background text-foreground">Select protected attributes</option>
+                    <option value="gender" className="bg-background text-foreground">gender</option>
+                    <option value="race" className="bg-background text-foreground">race</option>
+                    <option value="age" className="bg-background text-foreground">age</option>
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-content/30 pointer-events-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-content/50 mb-1.5">Prediction Column (optional)</label>
+                <div className="relative">
+                  <select value={prediction} onChange={(e) => setPrediction(e.target.value)} className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-sm text-content/80 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all appearance-none cursor-pointer">
+                    <option value="" className="bg-background text-foreground">Upload predictions CSV (optional)</option>
+                    <option value="prediction" className="bg-background text-foreground">prediction</option>
+                    <option value="score" className="bg-background text-foreground">score</option>
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-content/30 pointer-events-none" />
+                </div>
+              </div>
               <button className="w-full inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2">Analyze & Detect Bias<ArrowRight className="w-4 h-4" /></button>
             </div>
           </div>

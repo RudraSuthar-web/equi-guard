@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "./sidebar-context";
 import { useAuth } from "@/components/auth-context";
 
-const navItems = [
+export const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/upload", label: "Upload & Analyze", icon: Upload },
   { href: "/bias-detection", label: "Bias Detection", icon: ShieldAlert },
@@ -52,7 +52,7 @@ export function Sidebar() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen flex flex-col border-r border-content/[0.06] bg-sidebar transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        "hidden md:flex fixed left-0 top-0 z-40 h-screen flex-col border-r border-content/[0.06] bg-sidebar transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
         expanded ? "w-[240px]" : "w-[68px]"
       )}
     >
@@ -83,7 +83,7 @@ export function Sidebar() {
               className={cn(
                 "group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-content/[0.08] text-content border border-content/[0.12]"
+                  ? "bg-content/[0.10] text-content border border-content/[0.20] "
                   : "text-content/50 hover:text-content/80 hover:bg-content/[0.04] border border-transparent"
               )}
             >
@@ -129,10 +129,11 @@ export function Sidebar() {
           )}
         >
           <p className="text-[11px] text-content/30 px-3 mb-2">Ask me anything about bias, fairness, or your dataset...</p>
-          <button className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium text-content/70 bg-content/[0.06] hover:bg-content/[0.1] border border-content/[0.1] transition-all">
+          <Link href="/ai-assistant?new=true" className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium text-content/70 bg-content/[0.06] hover:bg-content/[0.1] border border-content/[0.1] transition-all">
             <Plus className="w-3.5 h-3.5" />
             New Chat
-          </button>
+          </Link>
+
         </div>
       </div>
 

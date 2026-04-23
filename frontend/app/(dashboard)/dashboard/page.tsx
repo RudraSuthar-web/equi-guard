@@ -36,7 +36,7 @@ export default function DashboardPage() {
   const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; dataKey: string }>; label?: string }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="glass-card rounded-lg p-3 text-xs border border-content/10">
+        <div className="glass-card rounded-lg p-3  text-xs border border-content/10" style={{ background: `var(--content-800)` }}>
           <p className="text-content font-medium mb-1">{label}</p>
           {payload.map((p, i) => (
             <p key={i} className="text-content/60">{p.dataKey === "before" ? "Before" : "After"}: <span className="text-content font-medium">{p.value}</span></p>
@@ -53,39 +53,39 @@ export default function DashboardPage() {
         action={<button className="inline-flex items-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05]"><Plus className="w-4 h-4" />New Audit</button>}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8 mb-8 md:mb-8">
         <StatCard label="Overall Bias Score" value="0.72" subtitle="From 0.73 to 0.24" icon={ShieldCheck} trend={{ value: "High Bias", positive: false }} />
         <StatCard label="Disparity Reduction" value="66.7%" icon={TrendingDown} trend={{ value: "↓ 0.86 after synthesis", positive: true }} />
         <StatCard label="Decisions Audited" value="10,000" subtitle="6,000 original + 4,000 synthetic" icon={Users} />
         <StatCard label="Fairness Status" value="Improved" subtitle="After Correction" icon={CheckCircle2} trend={{ value: "Pass", positive: true }} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2 glass-card rounded-xl p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+        <div className="lg:col-span-2 glass-card rounded-xl p-4 md:p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-sm font-semibold text-content">Bias Overview (Before vs After)</h3>
               <p className="text-xs text-content/30 mt-0.5">Decision scores across demographic breakdowns</p>
             </div>
             <div className="flex items-center gap-4 text-xs">
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-content/20" /><span className="text-content/40">Before</span></span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-content/60" /><span className="text-content/40">After</span></span>
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-muted-foreground/40 " /><span className="text-muted-foreground">Before</span></span>
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-primary" /><span className="text-primary">After</span></span>
             </div>
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <BarChart data={biasOverviewData} barGap={4}>
-              <CartesianGrid strokeDasharray="3 3" stroke={`rgba(${cr},0.04)`} />
+              <CartesianGrid strokeDasharray="3 3" stroke={`rgba(${cr},0.06)`} />
               <XAxis dataKey="group" tick={{ fill: `rgba(${cr},0.35)`, fontSize: 11 }} axisLine={{ stroke: `rgba(${cr},0.06)` }} tickLine={false} />
               <YAxis tick={{ fill: `rgba(${cr},0.35)`, fontSize: 11 }} axisLine={{ stroke: `rgba(${cr},0.06)` }} tickLine={false} domain={[0, 100]} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="before" fill={`rgba(${cr},0.12)`} radius={[4, 4, 0, 0]} />
-              <Bar dataKey="after" fill={`rgba(${cr},0.45)`} radius={[4, 4, 0, 0]} />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: `rgba(${cr},0.04)` }} />
+              <Bar dataKey="before" fill="var(--muted-foreground)" radius={[4, 4, 0, 0]} opacity={0.5} />
+              <Bar dataKey="after" fill="var(--primary)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="glass-card rounded-xl p-6">
-          <h3 className="text-sm font-semibold text-content mb-1">Bias Metrics</h3>
+        <div className="glass-card rounded-xl p-4 md:p-6">
+          <h3 className="text-sm md:text-base font-semibold text-content mb-1">Bias Metrics</h3>
           <p className="text-xs text-content/30 mb-5">Key fairness indicators</p>
           <div className="space-y-4">
             {biasMetrics.map((m) => (
@@ -106,13 +106,13 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="glass-card rounded-xl p-6">
-          <div className="flex items-center gap-2 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <div className="glass-card rounded-xl p-4 md:p-6">
+          <div className="flex items-center gap-2 mb-3 md:mb-4">
             <AlertTriangle className="w-4 h-4 text-content/60" />
-            <h3 className="text-sm font-semibold text-content">AI Explanation (Why is this happening?)</h3>
+            <h3 className="text-sm md:text-base font-semibold text-content">AI Explanation (Why is this happening?)</h3>
           </div>
-          <p className="text-sm text-content/50 leading-relaxed mb-5">{explanations[0].content}</p>
+          <p className="text-xs md:text-sm text-content/50 leading-relaxed mb-4 md:mb-5">{explanations[0].content}</p>
           <div className="flex flex-wrap gap-3 mb-4">
             {["66% Top-10 Biased", "Male Sig. Overrep'd", "Gender Top Feature", "Selection Gap → 23%"].map((tag) => (
               <span key={tag} className="text-[11px] text-content/50 bg-content/[0.04] border border-content/[0.06] px-2.5 py-1 rounded-full">{tag}</span>
@@ -121,15 +121,15 @@ export default function DashboardPage() {
           <button className="text-xs text-content/50 hover:text-content/80 transition-colors flex items-center gap-1">View Full Explanation <ArrowRight className="w-3 h-3" /></button>
         </div>
 
-        <div className="glass-card rounded-xl p-6">
-          <h3 className="text-sm font-semibold text-content mb-1">Top Fairness Features</h3>
-          <p className="text-xs text-content/30 mb-5">What We Did — Impact breakdown</p>
+        <div className="glass-card rounded-xl p-8 md:p-6">
+          <h3 className="text-xl md:text-base font-semibold text-content mb-1">Top Fairness Features</h3>
+          <p className="text-[15px] md:text-xs text-content/30 mb-4 md:mb-5">What We Did — Impact breakdown</p>
           <div className="space-y-3">
             {topFeatures.map((f) => (
               <div key={f.name}>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs text-content/60">{f.name}</span>
-                  <span className={`text-xs font-medium ${f.type === "bias" ? "text-content/40" : "text-content/70"}`}>{(f.impact * 100).toFixed(0)}%</span>
+                  <span className="text-[12px] md:text-xs text-content/60">{f.name}</span>
+                  <span className={`text-[12px] md:text-xs font-medium ${f.type === "bias" ? "text-content/40" : "text-content/70"}`}>{(f.impact * 100).toFixed(0)}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-content/[0.04]">
                   <div className={`h-full rounded-full transition-all duration-700 ${f.type === "bias" ? "bg-gradient-to-r from-content/30 to-content/15" : "bg-gradient-to-r from-content/50 to-content/30"}`} style={{ width: `${f.impact * 100}%` }} />
