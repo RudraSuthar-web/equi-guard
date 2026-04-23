@@ -11,9 +11,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "EquiGuard — AI Bias Detection for Hiring",
+  title: "EquiGuard — Unbiased AI Decision & Fairness Auditing",
   description:
-    "Detect and mitigate AI bias in hiring systems. EquiGuard uses shadow-twin analysis to ensure fair, equitable candidate evaluation.",
+    "Detect and mitigate AI bias in automated systems. EquiGuard ensures fair, equitable decisions across hiring, finance, and healthcare.",
 };
 
 export default function RootLayout({

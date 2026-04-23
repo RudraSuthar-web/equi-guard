@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 
 const features = [
-  { icon: Eye, title: "Shadow-Twin Analysis", description: "Compare candidate evaluations against demographic-neutral profiles to uncover hidden scoring disparities." },
-  { icon: Brain, title: "AI-Powered Detection", description: "Deep learning models analyze patterns across thousands of data points to identify systemic bias." },
-  { icon: BarChart3, title: "Comprehensive Reports", description: "Generate detailed fairness audits with actionable insights, disparity metrics, and remediation roadmaps." },
-  { icon: Zap, title: "Real-Time Monitoring", description: "Continuous monitoring of your hiring pipeline with instant alerts when bias thresholds are breached." },
-  { icon: Layers, title: "Data Synthesis", description: "Generate balanced, synthetic datasets to train fairer models without compromising on quality or accuracy." },
-  { icon: Lock, title: "Privacy-First", description: "All analysis runs locally. Candidate data is never stored, shared, or transmitted to third parties." },
+  { icon: Eye, title: "Shadow-Twin Analysis", description: "Compare automated decisions against demographic-neutral profiles to uncover hidden scoring disparities." },
+  { icon: Brain, title: "AI-Powered Detection", description: "Deep learning models analyze patterns across critical decision paths to identify systemic bias." },
+  { icon: BarChart3, title: "Comprehensive Reports", description: "Generate detailed fairness audits for loans, hiring, and healthcare models with actionable insights." },
+  { icon: Zap, title: "Real-Time Monitoring", description: "Continuous monitoring of automated systems with instant alerts when fairness thresholds are breached." },
+  { icon: Layers, title: "Data Synthesis", description: "Generate balanced, synthetic datasets to retrain fairer models for any decision-making use case." },
+  { icon: Lock, title: "Privacy-First", description: "All analysis runs locally. Sensitive decision data is never stored, shared, or transmitted to third parties." },
 ];
 
 const stats = [
@@ -65,11 +65,11 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="relative z-10 px-6 lg:px-12 pt-16 pb-24 lg:pt-24 lg:pb-32">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 text-xs font-medium text-content/60 bg-content/[0.06] border border-content/[0.1] px-4 py-1.5 rounded-full mb-8 animate-fade-in-up"><Sparkles className="w-3.5 h-3.5" />AI-Powered Fairness Platform</div>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-content mb-6 leading-[1.05] animate-fade-in-up" style={{ animationDelay: "100ms" }}>Fair Hiring Starts<br /><span className="gradient-text">With Fair AI</span></h1>
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-in-up" style={{ animationDelay: "200ms" }}>EquiGuard detects and eliminates bias in AI-driven hiring systems using shadow-twin analysis, ensuring every candidate is evaluated on merit — not demographics.</p>
+          <div className="inline-flex items-center gap-2 text-xs font-medium text-content/60 bg-content/[0.06] border border-content/[0.1] px-4 py-1.5 rounded-full mb-8 animate-fade-in-up"><Sparkles className="w-3.5 h-3.5" />Unbiased AI Decision Platform</div>
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-content mb-6 leading-[1.05] animate-fade-in-up" style={{ animationDelay: "100ms" }}>Fair Decisions Start<br /><span className="gradient-text">With Unbiased AI</span></h1>
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-in-up" style={{ animationDelay: "200ms" }}>EquiGuard detects and eliminates bias in automated systems—from bank loans to hiring and healthcare. We ensure every decision is based on merit, not flawed historical data.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
-            <Link href="/login?mode=signup" className="group inline-flex items-center gap-2.5 bg-cta text-cta-foreground font-semibold text-sm px-8 py-3.5 rounded-xl transition-all duration-300 shadow-lg shadow-content/[0.08] hover:-translate-y-0.5 hover:shadow-xl">Start Free Analysis<ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" /></Link>
+            <Link href="/login?mode=signup" className="group inline-flex items-center gap-2.5 bg-cta text-cta-foreground font-semibold text-sm px-8 py-3.5 rounded-xl transition-all duration-300 shadow-lg shadow-content/[0.08] hover:-translate-y-0.5 hover:shadow-xl">Start Fairness Audit<ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" /></Link>
             <a href="#how-it-works" className="inline-flex items-center gap-2 text-sm font-medium text-content/60 hover:text-content/90 border border-content/[0.1] hover:border-content/[0.2] px-6 py-3.5 rounded-xl transition-all duration-300 hover:bg-content/[0.03]">See How It Works<ChevronRight className="w-4 h-4" /></a>
           </div>
 
@@ -79,10 +79,10 @@ export default function LandingPage() {
               <div className="rounded-xl bg-content/[0.02] border border-content/[0.04] p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="flex gap-1.5"><div className="w-3 h-3 rounded-full bg-content/[0.08]" /><div className="w-3 h-3 rounded-full bg-content/[0.08]" /><div className="w-3 h-3 rounded-full bg-content/[0.08]" /></div>
-                  <div className="flex-1 h-7 rounded-lg bg-content/[0.04] flex items-center px-3"><span className="text-[11px] text-content/25 font-mono">equiguard.ai/analysis</span></div>
+                  <div className="flex-1 h-7 rounded-lg bg-content/[0.04] flex items-center px-3"><span className="text-[11px] text-content/25 font-mono">equiguard.ai/fairness-report</span></div>
                 </div>
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                  {[{ label: "Bias Score", value: "0.24", status: "Low" }, { label: "Disparity", value: "66.7%", status: "Reduced" }, { label: "Fairness", value: "Passed", status: "✓" }].map((item) => (
+                  {[{ label: "Decision Bias", value: "0.12", status: "Low" }, { label: "Parity Gap", value: "88.2%", status: "Resolved" }, { label: "Audit Status", value: "Compliant", status: "✓" }].map((item) => (
                     <div key={item.label} className="rounded-xl bg-content/[0.03] border border-content/[0.06] p-4 text-center">
                       <p className="text-[10px] uppercase tracking-widest text-content/30 mb-2">{item.label}</p>
                       <p className="text-xl font-bold text-content/80 mb-1">{item.value}</p>
@@ -110,9 +110,9 @@ export default function LandingPage() {
       <section id="features" className="relative z-10 py-24 lg:py-32 px-6 lg:px-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 text-xs font-medium text-content/60 bg-content/[0.06] border border-content/[0.1] px-4 py-1.5 rounded-full mb-6"><Globe className="w-3.5 h-3.5" />Core Capabilities</div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-content tracking-tight mb-4">Everything You Need for<br /><span className="gradient-text">Equitable AI Hiring</span></h2>
-            <p className="text-base text-muted-foreground max-w-xl mx-auto">A complete toolkit for detecting, analyzing, and eliminating bias across your entire hiring pipeline.</p>
+            <div className="inline-flex items-center gap-2 text-xs font-medium text-content/60 bg-content/[0.06] border border-content/[0.1] px-4 py-1.5 rounded-full mb-6"><Globe className="w-3.5 h-3.5" />Cross-Industry Auditing</div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-content tracking-tight mb-4">Everything You Need for<br /><span className="gradient-text">Unbiased Automated Decisions</span></h2>
+            <p className="text-base text-muted-foreground max-w-xl mx-auto">Inspect datasets and software models for hidden discrimination across finance, HR, and medical systems.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((feature, i) => (<div key={feature.title} className="glass-card glass-card-hover rounded-2xl p-6 animate-fade-in-up group cursor-default" style={{ animationDelay: `${i * 80}ms` }}><div className="w-11 h-11 rounded-xl bg-content/[0.06] flex items-center justify-center mb-5 group-hover:bg-content/[0.1] transition-colors"><feature.icon className="w-5 h-5 text-content/60 group-hover:text-content/80 transition-colors" /></div><h3 className="text-sm font-semibold text-content mb-2">{feature.title}</h3><p className="text-sm text-content/40 leading-relaxed">{feature.description}</p></div>))}
@@ -125,7 +125,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 text-xs font-medium text-content/60 bg-content/[0.06] border border-content/[0.1] px-4 py-1.5 rounded-full mb-6"><Zap className="w-3.5 h-3.5" />Simple Workflow</div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-content tracking-tight mb-4">Three Steps to<br /><span className="gradient-text">Fairer Hiring</span></h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-content tracking-tight mb-4">Three Steps to<br /><span className="gradient-text">Unbiased Systems</span></h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {steps.map((step, i) => (<div key={step.number} className="relative glass-card rounded-2xl p-8 text-center animate-fade-in-up group" style={{ animationDelay: `${i * 150}ms` }}><div className="text-5xl font-black text-content/[0.06] mb-4 group-hover:text-content/[0.1] transition-colors">{step.number}</div><h3 className="text-base font-semibold text-content mb-3">{step.title}</h3><p className="text-sm text-content/40 leading-relaxed">{step.description}</p>{i < steps.length - 1 && (<div className="hidden md:block absolute top-1/2 -right-3 -translate-y-1/2 z-10"><ChevronRight className="w-5 h-5 text-content/15" /></div>)}</div>))}
@@ -140,8 +140,8 @@ export default function LandingPage() {
             <div className="absolute inset-0 opacity-[0.03]" style={{ background: `radial-gradient(circle at 50% 50%, rgba(${cr},0.5) 0%, transparent 70%)` }} />
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-cta flex items-center justify-center mx-auto mb-6 shadow-lg shadow-content/[0.05]"><ShieldCheck className="w-7 h-7 text-cta-foreground" /></div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-content tracking-tight mb-4">Ready to Build Fairer AI?</h2>
-              <p className="text-base text-content/40 max-w-md mx-auto mb-8 leading-relaxed">Join organizations using EquiGuard to audit, detect, and mitigate bias in their AI hiring systems.</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-content tracking-tight mb-4">Ready to Build Fairer Systems?</h2>
+              <p className="text-base text-content/40 max-w-md mx-auto mb-8 leading-relaxed">Join organizations using EquiGuard to audit, detect, and mitigate bias before their systems impact real people.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link href="/login?mode=signup" className="group inline-flex items-center gap-2.5 bg-cta text-cta-foreground font-semibold text-sm px-8 py-3.5 rounded-xl transition-all duration-300 shadow-lg shadow-content/[0.08] hover:-translate-y-0.5">Create Free Account<ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" /></Link>
                 <Link href="/login" className="text-sm font-medium text-content/50 hover:text-content/80 transition-colors">Already have an account? Sign in →</Link>

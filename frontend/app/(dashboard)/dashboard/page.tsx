@@ -49,14 +49,14 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <PageHeader title="Dashboard" description="Overview of your latest analysis and fairness insights."
-        action={<button className="inline-flex items-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05]"><Plus className="w-4 h-4" />New Analysis</button>}
+      <PageHeader title="Dashboard" description="Overview of your latest fairness audits and automated decision insights."
+        action={<button className="inline-flex items-center gap-2 bg-cta text-cta-foreground text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05]"><Plus className="w-4 h-4" />New Audit</button>}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard label="Overall Bias Score" value="0.72" subtitle="From 0.73 to 0.24" icon={ShieldCheck} trend={{ value: "High Bias", positive: false }} />
         <StatCard label="Disparity Reduction" value="66.7%" icon={TrendingDown} trend={{ value: "↓ 0.86 after synthesis", positive: true }} />
-        <StatCard label="Records Processed" value="10,000" subtitle="6,000 original + 4,000 synthetic" icon={Users} />
+        <StatCard label="Decisions Audited" value="10,000" subtitle="6,000 original + 4,000 synthetic" icon={Users} />
         <StatCard label="Fairness Status" value="Improved" subtitle="After Correction" icon={CheckCircle2} trend={{ value: "Pass", positive: true }} />
       </div>
 
@@ -65,7 +65,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-sm font-semibold text-content">Bias Overview (Before vs After)</h3>
-              <p className="text-xs text-content/30 mt-0.5">Selection scores across demographic groups</p>
+              <p className="text-xs text-content/30 mt-0.5">Decision scores across demographic breakdowns</p>
             </div>
             <div className="flex items-center gap-4 text-xs">
               <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-content/20" /><span className="text-content/40">Before</span></span>
