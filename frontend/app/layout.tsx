@@ -30,13 +30,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col relative" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <AuthProvider>
-          <ThemeProvider>
-            <div className="relative z-10 flex flex-col min-h-screen">
-              {children}
-            </div>
-          </ThemeProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </AuthProvider>
       </body>
     </html>

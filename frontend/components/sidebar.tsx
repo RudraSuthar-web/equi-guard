@@ -52,7 +52,7 @@ export function Sidebar() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen flex flex-col sidebar-glass transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+        "hidden md:flex fixed left-0 top-0 z-40 h-screen flex-col border-r border-content/[0.06] bg-sidebar transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
         expanded ? "w-[240px]" : "w-[68px]"
       )}
     >
