@@ -178,17 +178,13 @@
   }
 }
 
-@keyframes gradientShift {
+@keyframes gradientMove {
   0% {
     background-position: 0% 50%;
   }
 
-  50% {
-    background-position: 100% 50%;
-  }
-
   100% {
-    background-position: 0% 50%;
+    background-position: 100% 50%;
   }
 }
 
@@ -340,25 +336,29 @@ input[type="range"]::-moz-range-thumb {
 
 /* AI Assistant Dynamic Animations */
 .dynamic-placeholder::placeholder {
-  background: linear-gradient(90deg,
+  background: linear-gradient(to right,
       var(--cta-bg) 0%,
-      rgba(var(--content-rgb), 0.7) 50%,
+      rgba(var(--content-rgb), 0.7) 25%,
+      var(--cta-bg) 50%,
+      rgba(var(--content-rgb), 0.7) 75%,
       var(--cta-bg) 100%) !important;
   background-size: 200% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   color: transparent !important;
-  animation: shimmer 3s linear infinite !important;
+  animation: gradientMove 3s linear infinite !important;
 }
 
 .dynamic-send-button {
-  background: linear-gradient(90deg,
+  background: linear-gradient(to right,
       var(--cta-bg) 0%,
-      rgba(var(--content-rgb), 0.7) 50%,
+      rgba(var(--content-rgb), 0.7) 25%,
+      var(--cta-bg) 50%,
+      rgba(var(--content-rgb), 0.7) 75%,
       var(--cta-bg) 100%) !important;
   background-size: 200% auto !important;
-  animation: shimmer 3s linear infinite !important;
+  animation: gradientMove 3s linear infinite !important;
 }
 
 .dynamic-send-button:disabled {
