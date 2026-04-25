@@ -117,7 +117,7 @@ export default function LandingPage() {
               <div className="w-10 h-10 rounded-2xl bg-cta flex items-center justify-center shadow-lg shadow-cta/20"><Shield className="w-5 h-5 text-cta-foreground" /></div>
               <span className="text-xl font-bold tracking-tight text-content">EquiGuard</span>
             </div>
-            
+
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-sm font-medium text-content/60 hover:text-primary transition-colors">Features</a>
@@ -149,7 +149,7 @@ export default function LandingPage() {
                 <a href="#stats" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-content/80 hover:text-primary transition-colors">Impact</a>
                 <div className="h-px bg-content/[0.05] w-full" />
                 <button onClick={(e) => { handleExplore(e); setIsMenuOpen(false); }} disabled={isExploring} className="flex items-center justify-between text-lg font-semibold text-content/80">
-                   Explore Demo <ChevronRight className="w-5 h-5" />
+                  Explore Demo <ChevronRight className="w-5 h-5" />
                 </button>
                 <Link href="/login?mode=signup" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 w-full bg-cta text-cta-foreground font-bold py-4 rounded-2xl shadow-xl shadow-cta/20">
                   Get Started <ArrowRight className="w-5 h-5" />
@@ -178,9 +178,9 @@ export default function LandingPage() {
                     <div className="grid grid-cols-3 gap-4 mb-6">
                       {[{ label: "Decision Bias", value: "0.12", status: "Low" }, { label: "Parity Gap", value: "88.2%", status: "Resolved" }, { label: "Audit Status", value: "Compliant", status: "✓" }].map((item) => (
                         <div key={item.label} className="rounded-xl bg-content/[0.03] border border-content/[0.06] p-4 text-center">
-                          <p className="text-[10px] uppercase tracking-widest text-content/40 mb-2">{item.label}</p>
-                          <p className="text-xl font-bold text-content/80 mb-1">{item.value}</p>
-                          <span className="text-[10px] text-content/50 bg-content/[0.05] px-2 py-0.5 rounded-full">{item.status}</span>
+                          <p className="text-[8px] md:text-[10px] uppercase tracking-widest text-content/40 mb-2">{item.label}</p>
+                          <p className="text-xs md:text-xl font-bold text-content/80 mb-1">{item.value}</p>
+                          <span className="text-[8px] md:text-[10px] text-content/50 bg-content/[0.05] px-2 py-0.5 rounded-full">{item.status}</span>
                         </div>
                       ))}
                     </div>
@@ -222,7 +222,7 @@ export default function LandingPage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-24">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-6 uppercase tracking-widest"><Globe className="w-3.5 h-3.5" />Cross-Industry Auditing</div>
-              <h2 className="text-4xl sm:text-6xl font-black text-content tracking-tight mb-6">Everything You Need for<br /><span className="text-primary">Unbiased Decisions</span></h2>
+              <h2 className="text-[25px] sm:text-5xl font-black text-content tracking-tight mb-6">Everything You Need for<br /><span className="text-primary">Unbiased Decisions</span></h2>
               <p className="text-xl text-content/40 max-w-2xl mx-auto font-medium">Inspect datasets and software models for hidden discrimination across finance, HR, and medical systems.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -238,8 +238,8 @@ export default function LandingPage() {
             </div>
 
             {/* Feature Highlight Illustration */}
-            <div className="mt-32 lg:mt-48 flex flex-col lg:flex-row items-center gap-20 animate-fade-in-up">
-              <div className="relative z-10 w-full flex-1 mb-10 flex items-center justify-center group cursor-pointer">
+            <div className="mt-30 lg:mt-40 flex flex-col lg:flex-row items-center gap-20 animate-fade-in-up">
+              <div className="relative z-10 w-full flex-1 mb-5 flex items-center justify-center group cursor-pointer">
                 <img
                   src="/illustrations/synthesis.png"
                   alt="Synthesis Illustration"
@@ -267,7 +267,7 @@ export default function LandingPage() {
         </section>
 
         {/* How it works */}
-        <section id="how-it-works" className="relative z-10 py-32 lg:py-48 px-6 lg:px-12 bg-content/[0.01] border-t border-content/[0.05]">
+        <section id="how-it-works" className="relative z-10 py-25 lg:py-30 px-6 lg:px-12 bg-content/[0.01] border-t border-content/[0.05]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-24">
               <div className="inline-flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-6 uppercase tracking-widest"><Zap className="w-3.5 h-3.5" />Simple Workflow</div>
@@ -289,9 +289,9 @@ export default function LandingPage() {
             </div>
 
             {/* Synthesis Illustration */}
-            <div className="flex flex-col lg:flex-row-reverse items-center gap-20 animate-fade-in-up">
+            <div className="flex flex-col  md:mt-48 lg:flex-row-reverse items-center gap-20 animate-fade-in-up">
 
-              <div className="relative z-10 w-full flex-1 mb-10 flex items-center justify-center group cursor-pointer">
+              <div className="relative z-10 w-full flex-1 mb-5 flex items-center justify-center group cursor-pointer">
                 <img
                   src="/illustrations/synthesis.png"
                   alt="Synthesis Illustration"
@@ -299,11 +299,11 @@ export default function LandingPage() {
                 />
               </div>
               <div className="flex-1 space-y-8 text-center lg:text-left">
-                <h2 className="text-4xl sm:text-5xl font-black text-content leading-none">Closing the Loop with<br /><span className="text-primary">Synthetic Data</span></h2>
+                <h2 className="text-[25px] sm:text-5xl font-black text-content leading-none">Closing the Loop with<br /><span className="text-primary">Synthetic Data</span></h2>
                 <p className="text-xl text-content/40 leading-relaxed font-medium">Once bias is detected, EquiGuard helps you fix it. We generate balanced, high-fidelity synthetic data to retrain your models.</p>
-                <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                <div className="flex flex-wrap justify-center lg:justify-start gap-2 md:gap-4">
                   {["Fair Training", "Privacy Preserving", "High Fidelity"].map((tag) => (
-                    <span key={tag} className="px-6 py-2.5 rounded-full bg-primary/10 border border-primary/20 text-sm font-bold text-primary uppercase tracking-widest">{tag}</span>
+                    <span key={tag} className=" px-4 py-2 md:px-6 md:py-2.5 rounded-full bg-primary/10 border border-primary/20 text-xs md:text-sm font-bold text-primary uppercase tracking-widest">{tag}</span>
                   ))}
                 </div>
               </div>
@@ -312,18 +312,18 @@ export default function LandingPage() {
         </section>
 
         {/* CTA */}
-        <section className="relative z-5 py-32 lg:py-35 px-6 lg:px-12">
+        <section className="relative z-5 py-20 lg:py-30 px-4 lg:px-12">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="glass-card rounded-[3rem] p-10 sm:p-24 relative overflow-hidden shadow-2xl shadow-primary/20">
+            <div className="glass-card rounded-[3rem] p-8 sm:p-24 relative overflow-hidden shadow-2xl shadow-primary/20">
               <div className="absolute inset-0 opacity-40" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, var(--primary) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
               <div className="relative z-10">
                 <div className="w-20 h-20 rounded-[3rem] bg-primary/10 flex items-center justify-center mx-auto mb-10"><ShieldCheck className="w-10 h-10 text-primary" /></div>
-                <h2 className="text-4xl sm:text-4xl font-black tracking-tight mb-2 text-content">Ready to Build?</h2>
-                <h2 className="text-4xl sm:text-5xl font-black tracking-tight mb-8 text-primary">Fair & Bias-Free Systems</h2>
-                <p className="text-xl text-content/40 max-w-xl mx-auto mb-12 font-medium leading-relaxed ">Join organizations using EquiGuard to audit, detect, and mitigate bias before their systems impact real people.</p>
+                <h2 className="text-[25px] sm:text-4xl font-black tracking-tight md:mb-2 text-content">Ready to Build?</h2>
+                <h2 className="text-[25px] sm:text-5xl font-black tracking-tight mb-8 text-primary">Fair & Bias-Free Systems</h2>
+                <p className="text-lg md:text-xl text-content/40 max-w-xl mx-auto mb-6 md:mb-12 font-medium leading-relaxed ">Join organizations using EquiGuard to audit, detect, and mitigate bias before their systems impact real people.</p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                  <Link href="/login?mode=signup" className="group inline-flex items-center gap-3 bg-white/80 text-primary font-black text-xl px-10 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-primary/20">Create Free Account<ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" /></Link>
-                  <Link href="/login" className="text-lg font-bold text-content/60 hover:text-content transition-colors">Already have an account? Sign in →</Link>
+                  <Link href="/login?mode=signup" className="group inline-flex items-center gap-3 bg-white/80 text-primary font-black text-md md:text-xl px-5 py-3 md:px-10 md:py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl shadow-primary/20">Create Free Account<ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" /></Link>
+                  <Link href="/login" className="text-sm md:text-lg font-bold text-content/60 hover:text-content transition-colors">Already have an account? Sign in →</Link>
                 </div>
               </div>
             </div>
@@ -331,16 +331,16 @@ export default function LandingPage() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="relative z-10 pt-10 pb-0 bg-background">
+        <section id="contact" className="relative z-10 md:pt-10 pb-0 bg-background">
 
-          <div className="bg-background py-16 px-6 sm:p-12 lg:p-20 flex flex-col lg:flex-row gap-16 items-center overflow-hidden relative">
+          <div className="bg-background py-16 px-4 sm:p-12 lg:p-20 flex flex-col lg:flex-row gap-16 items-center overflow-hidden relative">
             {/* Background Accent */}
             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-background to-transparent pointer-events-none"></div>
 
             {/* Left Column: Form */}
-            <div className="flex-1 w-full space-y-8 relative z-10">
+            <div className="flex-1 w-full space-y-8 relative z-10 mb-10 md:mb-0">
               <div>
-                <h2 className="text-4xl sm:text-5xl font-black text-content tracking-tight mb-4">Contact Us</h2>
+                <h2 className="text-[25px] sm:text-5xl font-black text-content tracking-tight mb-4">Contact Us</h2>
                 <p className="text-lg text-content/80 font-medium">
                   Interested in EquiGuard for your organization? We'd love to discuss how we can help you build fairer systems.
                 </p>
@@ -364,7 +364,7 @@ export default function LandingPage() {
             </div>
 
             {/* Right Column: Team & Illustration */}
-            <div className="flex-1 w-full relative z-10 hidden lg:flex flex-col">
+            <div className="flex-1 w-full relative z-10  md:flex flex-col">
               <div className="h-full rounded-3xl    flex flex-col items-center justify-between relative overflow-hidden group">
                 <div className="absolute inset-0"></div>
 
@@ -375,7 +375,7 @@ export default function LandingPage() {
                     className="w-full max-h-80 object-contain drop-shadow-2xl opacity-100 group-hover:scale-110 transition-all duration-700"
                   />
                 </div>
-                <div className="relative z-10 w-full mb-12 px-20">
+                <div className="relative z-10 w-full mb-12 ">
                   <h3 className="text-[11px] font-semibold text-content/60 mb-8 uppercase tracking-[0.2em] text-center">Built & Maintained By</h3>
                   <div className="grid grid-cols-2 gap-4">
                     {team.map((member, i) => (
@@ -385,7 +385,7 @@ export default function LandingPage() {
                         <p className="text-content/50 text-[10px] uppercase tracking-wider font-medium">{member.role}</p>
                       </div>
                     ))}
-                  </div>
+                  </div>  
                 </div>
 
                 {/* Social Links */}
@@ -415,7 +415,7 @@ export default function LandingPage() {
           <div className=" mx-auto">
 
             <div className="pt-5 border-t border-content/[0.05] text-center">
-              <p className="text-sm font-bold text-content/20 uppercase tracking-[0.2em]">© {new Date().getFullYear()} EquiGuard — Building a Fairer Future</p>
+              <p className="text-[10px] md:text-sm font-bold text-content/20 uppercase tracking-[0.2em]">© {new Date().getFullYear()} EquiGuard — Building a Fairer Future</p>
             </div>
           </div>
         </footer>

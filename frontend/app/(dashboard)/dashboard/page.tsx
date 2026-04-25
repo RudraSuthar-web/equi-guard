@@ -183,10 +183,10 @@ export default function DashboardPage() {
                 onMouseEnter={() => setBtnExpanded(true)}
                 onMouseLeave={() => setBtnExpanded(false)}
                 onClick={() => {router.push("/upload")}}
-                className={`tour-new-audit inline-flex items-center justify-center gap-2 bg-cta text-white text-sm md:text-md font-semibold h-[34px] md:h-[38px] rounded-xl md:rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-cta shadow-lg shadow-content/[0.05] overflow-hidden ${btnExpanded ? "w-[120px] md:w-[140px] px-4 md:px-5" : "w-[34px] md:w-[38px] px-0"}`}
+                className={`tour-new-audit inline-flex items-center justify-center gap-2 bg-cta text-white text-sm md:text-md font-semibold h-[34px] md:h-[38px] rounded-xl md:rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-cta shadow-lg shadow-content/[0.05] overflow-hidden ${btnExpanded ? "md:w-[120px] md:px-5 w-[34px]" : "w-[34px] md:w-[38px] px-0"}`}
               >
                 <Plus className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                <span className={`whitespace-nowrap transition-all duration-300 ${btnExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 hidden"}`}>New Audit</span>
+                <span className={`hidden md:block whitespace-nowrap transition-all duration-300 ${btnExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 md:hidden"}`}>New Audit</span>
               </button>
             </div>
           }

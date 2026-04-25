@@ -82,10 +82,10 @@ export default function ReportsPage() {
               <button 
                 onMouseEnter={() => setBtnExpanded(true)}
                 onMouseLeave={() => setBtnExpanded(false)}
-                className={`inline-flex items-center justify-center gap-2 bg-cta text-white text-md font-semibold h-[38px] rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-cta shadow-lg shadow-content/[0.05] overflow-hidden ${btnExpanded ? "w-[200px] px-5" : "w-[38px] px-0"}`}
+                className={`inline-flex items-center justify-center gap-2 bg-cta text-white text-md font-semibold h-[38px] rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-cta shadow-lg shadow-content/[0.05] overflow-hidden ${btnExpanded ? "md:w-[200px] md:px-5 w-[38px]" : "w-[38px] px-0"}`}
               >
                 <FileText className="w-5 h-5 shrink-0" />
-                <span className={`whitespace-nowrap transition-all duration-300 ${btnExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 hidden"}`}>Generate Report</span>
+                <span className={`hidden md:block whitespace-nowrap transition-all duration-300 ${btnExpanded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 md:hidden"}`}>Generate Report</span>
               </button>
             </div>
           }

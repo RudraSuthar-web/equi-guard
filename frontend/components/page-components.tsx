@@ -11,8 +11,8 @@ export function PageHeader({ title, description, action }: PageHeaderProps) {
   return (
     <div className="flex items-start justify-between mb-6 md:mb-8">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold text-primary tracking-tight">{title}</h1>
-        <p className="text-xs md:text-sm text-content/40 mt-1">{description}</p>
+        <h1 className="text-2xl md:text-2xl font-bold text-primary tracking-tight">{title}</h1>
+        <p className="text-sm md:text-sm text-content/40 mt-1">{description}</p>
       </div>
       {action && <div>{action}</div>}
     </div>
@@ -40,7 +40,7 @@ export function StatCard({ label, value, subtitle, icon: Icon, trend, className 
           </div>
         )}
       </div>
-      <p className="text-xl md:text-2xl font-bold text-content tracking-tight">{value}</p>
+      <p className="text-lg md:text-2xl font-bold text-content tracking-tight">{value}</p>
       {(subtitle || trend) && (
         <div className="flex items-center gap-2 mt-1.5">
           {trend && (
