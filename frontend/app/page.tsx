@@ -7,7 +7,8 @@ import { useAuth } from "@/components/auth-context";
 import { useTheme } from "@/components/theme-provider";
 import {
   Shield, ArrowRight, Sparkles, Eye, BarChart3, Zap,
-  ShieldCheck, Lock, ChevronRight, Globe, Layers, Brain, Mail, Send
+  ShieldCheck, Lock, ChevronRight, Globe, Layers, Brain, Mail, Send,
+  Menu, X
 } from "lucide-react";
 
 const features = [
@@ -46,6 +47,7 @@ export default function LandingPage() {
   const router = useRouter();
   const [isExploring, setIsExploring] = useState(false);
   const [contactStatus, setContactStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,24 +111,52 @@ export default function LandingPage() {
 
 
         {/* Navbar */}
-        <nav className="sticky top-0 z-50 w-full px-6 lg:px-12 bg-background/60 backdrop-blur-xl border-b border-content/[0.05]">
+        <nav className="sticky top-0 z-50 w-full px-4 sm:px-6 lg:px-12 bg-background/60 backdrop-blur-xl border-b border-content/[0.05]">
           <div className="max-w-7xl mx-auto flex items-center justify-between h-20">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-cta flex items-center justify-center shadow-lg shadow-cta/20"><Shield className="w-5 h-5 text-cta-foreground" /></div>
               <span className="text-xl font-bold tracking-tight text-content">EquiGuard</span>
             </div>
+            
+            {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-sm font-medium text-content/60 hover:text-primary transition-colors">Features</a>
               <a href="#how-it-works" className="text-sm font-medium text-content/60 hover:text-primary transition-colors">How It Works</a>
               <a href="#stats" className="text-sm font-medium text-content/60 hover:text-primary transition-colors">Impact</a>
             </div>
-            <div className="flex items-center gap-3">
+
+            <div className="hidden md:flex items-center gap-3">
               <button onClick={handleExplore} disabled={isExploring} className="text-sm font-semibold text-content/80 hover:text-content transition-colors px-4 py-2 disabled:opacity-50">
                 {isExploring ? "Loading..." : "Explore"}
               </button>
               <Link href="/login?mode=signup" className="inline-flex items-center gap-1.5 text-sm font-bold bg-cta text-cta-foreground px-6 py-2.5 rounded-2xl hover:bg-cta/90 transition-all shadow-xl shadow-cta/20 hover:-translate-y-0.5">Get Started<ArrowRight className="w-4 h-4" /></Link>
             </div>
+
+            {/* Mobile Menu Toggle */}
+            <div className="flex md:hidden items-center gap-4">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 text-content/60 hover:text-content transition-colors">
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
+
+          {/* Mobile Menu Overlay */}
+          {isMenuOpen && (
+            <div className="md:hidden absolute top-20 left-0 w-full bg-background/95 backdrop-blur-2xl border-b border-content/[0.05] animate-in fade-in slide-in-from-top-4 duration-300">
+              <div className="flex flex-col p-6 gap-6">
+                <a href="#features" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-content/80 hover:text-primary transition-colors">Features</a>
+                <a href="#how-it-works" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-content/80 hover:text-primary transition-colors">How It Works</a>
+                <a href="#stats" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-content/80 hover:text-primary transition-colors">Impact</a>
+                <div className="h-px bg-content/[0.05] w-full" />
+                <button onClick={(e) => { handleExplore(e); setIsMenuOpen(false); }} disabled={isExploring} className="flex items-center justify-between text-lg font-semibold text-content/80">
+                   Explore Demo <ChevronRight className="w-5 h-5" />
+                </button>
+                <Link href="/login?mode=signup" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 w-full bg-cta text-cta-foreground font-bold py-4 rounded-2xl shadow-xl shadow-cta/20">
+                  Get Started <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </div>
+          )}
         </nav>
 
         {/* Hero */}
@@ -161,8 +191,8 @@ export default function LandingPage() {
 
               {/* Right Column: Text */}
               <div className="flex-1 w-full relative z-20 text-center lg:text-left lg:pl-16">
-                <div className="inline-flex items-center gap-2 text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-8 animate-fade-in-up uppercase tracking-widest"><Sparkles className="w-3.5 h-3.5" />Unbiased AI Decision Platform</div>
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-content mb-8 leading-[1.05] animate-fade-in-up">Fair Decisions<br /><span className="text-primary">With Unbiased AI</span></h1>
+                <div className="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-4 py-2 rounded-full mb-8 animate-fade-in-up uppercase tracking-widest"><Sparkles className="w-3.5 h-3.5" />Unbiased AI Decision Platform</div>
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-content mb-8 leading-[1.05] animate-fade-in-up">Fair Decisions<br /><span className="text-primary">With Unbiased AI</span></h1>
                 <p className="text-lg sm:text-xl text-content/60 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-12 animate-fade-in-up font-medium" style={{ animationDelay: "100ms" }}>EquiGuard detects and eliminates bias in automated systems. We ensure every decision is based on merit, not flawed data.</p>
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
                   <Link href="/login?mode=signup" className="group inline-flex items-center gap-2.5 bg-cta text-cta-foreground font-bold text-md px-8 py-4 rounded-2xl transition-all duration-300 shadow-2xl shadow-cta/0 hover:-translate-y-1 hover:shadow-cta/10">Start Fairness Audit<ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" /></Link>
@@ -303,7 +333,7 @@ export default function LandingPage() {
         {/* Contact Section */}
         <section id="contact" className="relative z-10 pt-10 pb-0 bg-background">
 
-          <div className="bg-background pt-20 pl-20 pb-4 pr-20 sm:p-12 sm:pb-4 lg:pt-20 lg:pl-20 lg:pb-4 flex flex-col lg:flex-row gap-16 items-center overflow-hidden relative">
+          <div className="bg-background py-16 px-6 sm:p-12 lg:p-20 flex flex-col lg:flex-row gap-16 items-center overflow-hidden relative">
             {/* Background Accent */}
             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-background to-transparent pointer-events-none"></div>
 

@@ -135,7 +135,7 @@ export default function BiasDetectionPage() {
           title="Bias Detection" 
           description="Detailed bias analysis results and fairness metrics."
           action={
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 md:gap-3 justify-end">
               <button 
                 onClick={() => setTourRun(true)}
                 className="group p-2 rounded-2xl bg-content/[0.04] border border-content/[0.08] hover:bg-content/[0.08] transition-all hover:border-cta/30"
@@ -144,8 +144,8 @@ export default function BiasDetectionPage() {
                 <HelpCircle className="w-5 h-5 text-content/40 group-hover:text-cta transition-colors" />
               </button>
               <div className="flex items-center gap-2">
-                <button className="inline-flex items-center gap-2 text-sm text-content/50 bg-content/[0.04] border border-content/[0.08] px-2 py-2 rounded-lg hover:bg-content/[0.06] transition-all"><Filter className="w-3 h-3" />Group: Gender</button>
-                <button className="inline-flex items-center gap-2 text-sm text-content/50 bg-content/[0.04] border border-content/[0.08] px-2 py-2 rounded-lg hover:bg-content/[0.06] transition-all"><Eye className="w-3 h-3" />View Options</button>
+                <button className="inline-flex items-center gap-2 text-[11px] md:text-sm text-content/50 bg-content/[0.04] border border-content/[0.08] px-2 py-2 rounded-lg hover:bg-content/[0.06] transition-all"><Filter className="w-3 h-3" />Group: Gender</button>
+                <button className="inline-flex items-center gap-2 text-[11px] md:text-sm text-content/50 bg-content/[0.04] border border-content/[0.08] px-2 py-2 rounded-lg hover:bg-content/[0.06] transition-all"><Eye className="w-3 h-3" />View Options</button>
               </div>
             </div>
           }
@@ -153,28 +153,47 @@ export default function BiasDetectionPage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="glass-card rounded-xl p-6 glow-white">
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                <svg className="w-32 h-32 -rotate-90" viewBox="0 0 120 120">
+          <div className="glass-card rounded-xl p-4 md:p-6 glow-white">
+            <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+              <div className="relative shrink-0">
+                <svg className="w-24 h-24 md:w-32 md:h-32 -rotate-90" viewBox="0 0 120 120">
                   <circle cx="60" cy="60" r="52" fill="none" stroke={`rgba(${cr},0.04)`} strokeWidth="8" />
                   <circle cx="60" cy="60" r="52" fill="none" stroke="var(--primary)" strokeWidth="8" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 52}`} strokeDashoffset={`${2 * Math.PI * 52 * (1 - data.biasScore)}`} />
                 </svg>
-                <div className="absolute inset-0 flex items-center justify-center"><span className="text-4xl font-bold text-content">{data.biasScore.toFixed(2)}</span></div>
+                <div className="absolute inset-0 flex items-center justify-center"><span className="text-3xl md:text-4xl font-bold text-content">{data.biasScore.toFixed(2)}</span></div>
               </div>
               <div>
-                <div className="flex items-center gap-2 mb-2"><span className="text-xs font-medium text-content/70 bg-content/[0.08] border border-content/[0.12] px-2.5 py-0.5 rounded-full">{data.biasStatus}</span></div>
+                <div className="flex items-center justify-center sm:justify-start gap-2 mb-2"><span className="text-xs font-medium text-content/70 bg-content/[0.08] border border-content/[0.12] px-2.5 py-0.5 rounded-full">{data.biasStatus}</span></div>
                 <h3 className="text-lg font-bold text-content mb-1">Bias Score</h3>
                 <p className="text-sm text-content/40 max-w-md">The AI model demonstrates selection disparities across protected demographic groups.</p>
               </div>
             </div>
           </div>
-          <div className="tour-disparity-chart glass-card rounded-xl p-6">
+          <div className="tour-disparity-chart glass-card rounded-xl p-4 md:p-6">
             <h3 className="text-lg font-semibold text-content mb-1">Selection Rate by Group</h3>
             <p className="text-sm text-content/30 mb-4">Hiring selection rates across demographic categories</p>
-            <div className="flex items-center gap-8">
-              <div className="w-48 h-48"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={data.selectionRateData} cx="50%" cy="50%" innerRadius={50} outerRadius={75} paddingAngle={4} dataKey="value" stroke="none">{data.selectionRateData.map((entry: any, index: number) => (<Cell key={`cell-${index}`} fill={entry.color} />))}</Pie><Tooltip content={<CustomTooltip />} /></PieChart></ResponsiveContainer></div>
-              <div className="flex-1 space-y-3">{data.selectionRateData.map((item: any) => (<div key={item.name} className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} /><span className="text-sm text-content/60">{item.name}</span></div><span className="text-sm font-semibold text-content">{item.value}%</span></div>))}</div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+              <div className="w-40 h-40 md:w-48 md:h-48 shrink-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={data.selectionRateData} cx="50%" cy="50%" innerRadius={40} outerRadius={70} paddingAngle={4} dataKey="value" stroke="none">
+                      {data.selectionRateData.map((entry: any, index: number) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex-1 w-full space-y-3">
+                {data.selectionRateData.map((item: any) => (
+                  <div key={item.name} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="text-sm text-content/60">{item.name}</span>
+                    </div>
+                    <span className="text-sm font-semibold text-content">{item.value}%</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="glass-card rounded-xl p-6">

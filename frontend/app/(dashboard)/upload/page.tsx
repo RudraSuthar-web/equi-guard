@@ -9,6 +9,7 @@ import { UPLOAD_STEPS } from "@/lib/tour-steps";
 import { useAuth } from "@/components/auth-context";
 import { API_URL, DEMO_USER_EMAIL } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 
 const aboutItems = [
@@ -78,14 +79,14 @@ export default function UploadPage() {
               <div className="flex gap-1">{["Upload Data", "Settings", "Configure", "Complete"].map((step, i) => (<span key={step} className={`text-[12px] font-medium px-2.5 py-1 rounded-full ${i === 0 ? "bg-content/[0.1] text-content border border-content/[0.15]" : "text-content/25 bg-content/[0.03] border border-content/[0.04]"}`}>{step}</span>))}</div>
             </div>
             <div onDragOver={(e) => { e.preventDefault(); setDragOver(true); }} onDragLeave={() => setDragOver(false)} onDrop={(e) => { e.preventDefault(); setDragOver(false); setUploaded(true); }}
-              className={`border-2 border-dashed rounded-xl p-35 text-center transition-all duration-300 cursor-pointer ${dragOver ? "border-primary/50 bg-content/[0.03]" : uploaded ? "border-content/20 bg-content/[0.02]" : "border-primary/30 hover:border-primary/50 hover:bg-content/[0.02]"}`}
+              className={`border-2 border-dashed rounded-xl py-12 px-4 sm:py-24 sm:px-12 text-center transition-all duration-300 cursor-pointer ${dragOver ? "border-primary/50 bg-content/[0.03]" : uploaded ? "border-content/20 bg-content/[0.02]" : "border-primary/30 hover:border-primary/50 hover:bg-content/[0.02]"}`}
               onClick={() => setUploaded(true)}>
-              <div className={`w-20 h-20 rounded-[3rem] mx-auto mb-4 flex items-center justify-center ${uploaded ? "bg-content/[0.08]" : "bg-content/[0.06]"}`}>
-                {uploaded ? <Check className="w-15 h-15 text-content/70" /> : <CloudUpload className="w-10 h-10 text-content/60" />}
+              <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] sm:rounded-[3rem] mx-auto mb-4 flex items-center justify-center ${uploaded ? "bg-content/[0.08]" : "bg-content/[0.06]"}`}>
+                {uploaded ? <Check className="w-8 h-8 sm:w-15 sm:h-15 text-content/70" /> : <CloudUpload className="w-8 h-8 sm:w-10 sm:h-10 text-content/60" />}
               </div>
-              <p className="text-md font-medium text-content/70 mb-1">{uploaded ? "hiring_data.csv uploaded" : "Drag & drop your CSV file here"}</p>
-              <p className="text-sm text-content/30">{ "Or click to browse. CSV files up to 100MB."}</p>
-              {!uploaded && (<button className="mt-4 inline-flex items-center gap-2 text-md font-medium text-content/70 bg-content/[0.06] border border-content/[0.1] px-4 py-2 rounded-lg hover:bg-content/[0.1] transition-all"><UploadIcon className="w-3.5 h-3.5" />Browse Files</button>)}
+              <p className="text-sm sm:text-md font-medium text-content/70 mb-1">{uploaded ? "hiring_data.csv uploaded" : "Drag & drop your CSV file here"}</p>
+              <p className="text-xs sm:text-sm text-content/30">{ "Or click to browse. CSV files up to 100MB."}</p>
+              {!uploaded && (<button className="mt-4 inline-flex items-center gap-2 text-sm sm:text-md font-medium text-content/70 bg-content/[0.06] border border-content/[0.1] px-4 py-2 rounded-lg hover:bg-content/[0.1] transition-all"><UploadIcon className="w-3.5 h-3.5" />Browse Files</button>)}
             </div>
           </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -153,7 +154,20 @@ export default function UploadPage() {
           <div className="tour-about-data glass-card rounded-xl p-6">
             <h3 className="text-sm font-semibold text-content mb-1">About Your Data</h3>
             <p className="text-xs text-content/30 mb-5">Dataset summary and guidance</p>
-            <div className="grid grid-cols-3 gap-4">{aboutItems.map((item) => (<div key={item.label} className={`bg-content/[0.02] border border-content/[0.06] rounded-lg p-4 ${item.label === "Tip" ? "col-span-3" : ""}`}><div className="flex items-center gap-2 mb-2"><item.icon className="w-3.5 h-3.5 text-content/50" /><span className="text-xs font-medium text-content/50">{item.label}</span></div><p className="text-sm text-content/70">{item.value}</p></div>))}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {aboutItems.map((item) => (
+                <div key={item.label} className={cn(
+                  "bg-content/[0.02] border border-content/[0.06] rounded-lg p-4",
+                  item.label === "Tip" ? "sm:col-span-3" : "col-span-1"
+                )}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <item.icon className="w-3.5 h-3.5 text-content/50" />
+                    <span className="text-xs font-medium text-content/50">{item.label}</span>
+                  </div>
+                  <p className="text-sm text-content/70">{item.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="glass-card rounded-xl p-6">
             <h3 className="text-sm font-semibold text-content mb-4">Quick Guide</h3>
