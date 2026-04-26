@@ -1,81 +1,94 @@
 "use client";
 
-import { useState } from "react";
+import { PageHeader } from "@/components/page-components";
 import {
-  CloudUpload,
-  Check,
-  ArrowRight,
-  Loader2,
+  Upload as UploadIcon,
   FileText,
   Columns,
   HardDrive,
   Lightbulb,
+  ArrowRight,
+  Check,
+  CloudUpload,
+  Loader2,
 } from "lucide-react";
 
+import { useState } from "react";
+
 export default function UploadPage() {
-  const [file, setFile] = useState<File | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [uploaded, setUploaded] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
 
+  const [file, setFile] = useState<File | null>(null);
+
   const [targetVar, setTargetVar] = useState("");
   const [protectedAttr, setProtectedAttr] = useState("");
-  const [prediction, setPrediction] = useState("");
 
-  // OUTPUT STATES
-  const [rows, setRows] = useState("—");
-  const [cols, setCols] = useState("—");
-  const [size, setSize] = useState("—");
+  const [result, setResult] = useState<any>(null);
 
-  // READ CSV + SHOW DETAILS
-  const handleFileChange = async (selected: File) => {
-    setFile(selected);
-    setUploaded(true);
-
-    // FILE SIZE
-    const fileSizeMB = (selected.size / 1024 / 1024).toFixed(2) + " MB";
-    setSize(fileSizeMB);
-
-    // READ CSV TEXT
-    const text = await selected.text();
-
-    const lines = text.trim().split("\n");
-
-    // ROWS
-    const totalRows = lines.length - 1;
-    setRows(String(totalRows));
-
-    // COLUMNS
-    const totalCols = lines[0].split(",").length;
-    setCols(String(totalCols));
-  };
-
+  // ========================================
+  // ANALYZE
+  // ========================================
   const handleAnalyze = async () => {
     if (!file || !targetVar || !protectedAttr) {
-      alert("Please upload file and fill fields.");
+      alert("Upload file and enter fields.");
       return;
     }
 
     setAnalyzing(true);
 
-    setTimeout(() => {
+    try {
+      const formData = new FormData();
+
+      formData.append("file", file);
+      formData.append("target", targetVar);
+      formData.append("protected", protectedAttr);
+
+      const response = await fetch("http://127.0.0.1:8000/analyze", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      setResult(data);
+    } catch (error) {
+      console.error(error);
+      alert("Backend connection failed");
+    } finally {
       setAnalyzing(false);
-      alert("Analysis Complete");
-    }, 1500);
+    }
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8">
+    <div className="max-w-5xl mx-auto">
       {/* HEADER */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Upload & Analyze</h1>
-        <p className="text-gray-500">
-          Upload dataset and see details instantly.
-        </p>
-      </div>
+      <PageHeader
+        title="Upload & Analyze"
+        description="Upload your dataset and configure analysis parameters."
+      />
 
       {/* UPLOAD BOX */}
-      <div className="bg-white rounded-2xl shadow p-6 mb-8">
+      <div className="glass-card rounded-xl p-6 mb-6">
+        <div className="flex gap-1 mb-4">
+          {["Upload Data", "Settings", "Configure", "Complete"].map(
+            (step, i) => (
+              <span
+                key={step}
+                className={`text-[13px] md:text-[11px] font-medium px-2.5 py-1 rounded-full ${
+                  i === 0
+                    ? "bg-content/[0.1] text-content border border-content/[0.15]"
+                    : "text-content/25 bg-content/[0.03] border border-content/[0.04]"
+                }`}
+              >
+                {step}
+              </span>
+            )
+          )}
+        </div>
+
+        {/* DROP ZONE */}
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -86,163 +99,214 @@ export default function UploadPage() {
             e.preventDefault();
             setDragOver(false);
 
-            const dropped = e.dataTransfer.files[0];
+            const droppedFile = e.dataTransfer.files[0];
 
-            if (dropped) handleFileChange(dropped);
+            if (droppedFile) {
+              setFile(droppedFile);
+              setUploaded(true);
+            }
           }}
-          className={`border-2 border-dashed rounded-2xl p-16 text-center transition ${
-            dragOver ? "border-blue-500 bg-blue-50" : "border-gray-300"
+          className={`border-2 border-dashed rounded-xl py-12 px-4 sm:py-24 sm:px-12 text-center transition-all duration-300 cursor-pointer ${
+            dragOver
+              ? "border-primary/50 bg-content/[0.03]"
+              : uploaded
+              ? "border-content/20 bg-content/[0.02]"
+              : "border-primary/30 hover:border-primary/50 hover:bg-content/[0.02]"
           }`}
         >
           <input
             type="file"
-            hidden
             accept=".csv"
+            hidden
             id="fileUpload"
             onChange={(e) => {
               const selected = e.target.files?.[0];
-              if (selected) handleFileChange(selected);
+
+              if (selected) {
+                setFile(selected);
+                setUploaded(true);
+              }
             }}
           />
 
           <label htmlFor="fileUpload" className="cursor-pointer">
-            {uploaded ? (
-              <>
-                <Check className="mx-auto text-green-500 w-12 h-12 mb-4" />
-                <p className="font-semibold">{file?.name}</p>
-                <p className="text-sm text-gray-500">Uploaded</p>
-              </>
-            ) : (
-              <>
-                <CloudUpload className="mx-auto w-12 h-12 mb-4 text-gray-500" />
-                <p className="font-semibold">Drag & Drop CSV Here</p>
-                <p className="text-sm text-gray-500">or click to browse</p>
-              </>
+            <div
+              className={`w-20 h-20 rounded-[3rem] mx-auto mb-4 flex items-center justify-center ${
+                uploaded ? "bg-content/[0.08]" : "bg-content/[0.06]"
+              }`}
+            >
+              {uploaded ? (
+                <Check className="w-12 h-12 text-content/70" />
+              ) : (
+                <CloudUpload className="w-12 h-12 text-content/60" />
+              )}
+            </div>
+
+            <p className="text-lg md:text-md font-medium text-content/70 mb-1">
+              {uploaded ? file?.name : "Drag & drop your CSV file here"}
+            </p>
+
+            <p className="text-md md:text-sm text-content/30">
+              Or click to browse. CSV files up to 100MB.
+            </p>
+
+            {!uploaded && (
+              <button className="mt-4 inline-flex items-center gap-2 text-md font-medium text-content/70 bg-content/[0.06] border border-content/[0.1] px-4 py-2 rounded-lg hover:bg-content/[0.1] transition-all">
+                <UploadIcon className="w-3.5 h-3.5" />
+                Browse Files
+              </button>
             )}
           </label>
         </div>
       </div>
 
-      {/* GRID */}
-      <div className="grid md:grid-cols-2 gap-8">
+      {/* MAIN GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* LEFT */}
-        <div className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-xl font-semibold mb-6">
-            Configure Analysis
-          </h2>
+        <div className="space-y-6">
+          {/* CONFIGURE */}
+          <div className="glass-card rounded-xl p-6">
+            <h3 className="text-lg md:text-md font-semibold text-content mb-1">
+              Configure Analysis
+            </h3>
 
-          <div className="mb-4">
-            <label className="block mb-2 font-medium">
-              Target Column
-            </label>
-            <input
-              type="text"
-              placeholder="Example: hired"
-              value={targetVar}
-              onChange={(e) => setTargetVar(e.target.value)}
-              className="w-full border rounded-xl px-4 py-3"
-            />
+            <p className="text-sm text-content/30 md:mb-5 mb-10">
+              Enter your column names manually
+            </p>
+
+            <div className="space-y-4">
+              {/* TARGET */}
+              <div>
+                <label className="block text-lg md:text-sm font-medium text-content/50 mb-2">
+                  Target Variable
+                </label>
+
+                <input
+                  type="text"
+                  value={targetVar}
+                  onChange={(e) => setTargetVar(e.target.value)}
+                  placeholder="Ex: hired"
+                  className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-md md:text-sm text-content/80 focus:outline-none"
+                />
+              </div>
+
+              {/* PROTECTED */}
+              <div>
+                <label className="block text-lg md:text-sm font-medium text-content/50 mb-2">
+                  Protected Attribute
+                </label>
+
+                <input
+                  type="text"
+                  value={protectedAttr}
+                  onChange={(e) => setProtectedAttr(e.target.value)}
+                  placeholder="Ex: gender"
+                  className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-md md:text-sm text-content/80 focus:outline-none"
+                />
+              </div>
+
+              {/* BUTTON */}
+              <button
+                onClick={handleAnalyze}
+                disabled={
+                  analyzing || !uploaded || !targetVar || !protectedAttr
+                }
+                className="w-full inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50"
+              >
+                {analyzing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    Analyze & Detect Bias
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block mb-2 font-medium">
-              Protected Column
-            </label>
-            <input
-              type="text"
-              placeholder="Example: gender"
-              value={protectedAttr}
-              onChange={(e) => setProtectedAttr(e.target.value)}
-              className="w-full border rounded-xl px-4 py-3"
-            />
-          </div>
+          {/* BEFORE CLEAN */}
+          {result && (
+            <div className="glass-card rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-content mb-4">
+                Before Clean
+              </h3>
 
-          <div className="mb-6">
-            <label className="block mb-2 font-medium">
-              Prediction Column
-            </label>
-            <input
-              type="text"
-              placeholder="Optional"
-              value={prediction}
-              onChange={(e) => setPrediction(e.target.value)}
-              className="w-full border rounded-xl px-4 py-3"
-            />
-          </div>
-
-          <button
-            onClick={handleAnalyze}
-            disabled={
-              analyzing ||
-              !uploaded ||
-              !targetVar ||
-              !protectedAttr
-            }
-            className="w-full bg-black text-white rounded-xl py-3 font-semibold flex justify-center items-center gap-2 disabled:opacity-50"
-          >
-            {analyzing ? (
-              <>
-                <Loader2 className="animate-spin w-4 h-4" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                Analyze Dataset
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
+              <div className="space-y-2 text-content/70">
+                <p>Rows: {result.before_clean.rows}</p>
+                <p>Columns: {result.before_clean.columns}</p>
+                <p>Duplicates: {result.before_clean.duplicates}</p>
+                <p>Missing Values: {result.before_clean.missing_values}</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* RIGHT */}
         <div className="space-y-6">
-          {/* OUTPUT SAME PAGE */}
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">
+          {/* ABOUT DATA */}
+          <div className="glass-card rounded-xl p-6">
+            <h3 className="text-lg md:text-sm font-semibold text-content mb-1">
               About Your Data
-            </h2>
+            </h3>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="border rounded-xl p-4">
-                <FileText className="mb-2 w-5 h-5" />
-                <p className="text-sm text-gray-500">Rows</p>
-                <p className="font-semibold">{rows}</p>
+            <p className="text-md md:text-sm text-content/30 mb-5">
+              Dataset summary and guidance
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+                <FileText className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Rows</span>
+                <p className="text-content/70">
+                  {result ? result.file_info.rows : "—"}
+                </p>
               </div>
 
-              <div className="border rounded-xl p-4">
-                <Columns className="mb-2 w-5 h-5" />
-                <p className="text-sm text-gray-500">Columns</p>
-                <p className="font-semibold">{cols}</p>
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+                <Columns className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Columns</span>
+                <p className="text-content/70">
+                  {result ? result.file_info.columns : "—"}
+                </p>
               </div>
 
-              <div className="border rounded-xl p-4">
-                <HardDrive className="mb-2 w-5 h-5" />
-                <p className="text-sm text-gray-500">File Size</p>
-                <p className="font-semibold">{size}</p>
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+                <HardDrive className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Size</span>
+                <p className="text-content/70">
+                  {result ? `${result.file_info.size_kb} KB` : "—"}
+                </p>
               </div>
 
-              <div className="border rounded-xl p-4">
-                <Lightbulb className="mb-2 w-5 h-5" />
-                <p className="text-sm text-gray-500">Tip</p>
-                <p className="font-semibold text-xs">
-                  Upload CSV to auto detect details
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4 sm:col-span-3">
+                <Lightbulb className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Tip</span>
+                <p className="text-content/70">
+                  Make sure your data contains target and protected columns.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">
-              Quick Guide
-            </h2>
+          {/* AFTER CLEAN */}
+          {result && (
+            <div className="glass-card rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-content mb-4">
+                After Clean
+              </h3>
 
-            <div className="space-y-2 text-sm text-gray-600">
-              <p>1. Upload CSV</p>
-              <p>2. Rows auto shown</p>
-              <p>3. Columns auto shown</p>
-              <p>4. Size auto shown</p>
+              <div className="space-y-2 text-content/70">
+                <p>Rows: {result.after_clean.rows}</p>
+                <p>Columns: {result.after_clean.columns}</p>
+                <p>Duplicates: {result.after_clean.duplicates}</p>
+                <p>Missing Values: {result.after_clean.missing_values}</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
