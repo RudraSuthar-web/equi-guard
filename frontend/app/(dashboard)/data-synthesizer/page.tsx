@@ -37,7 +37,7 @@ export default function DataSynthesizerPage() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch("http://localhost:8000/synthesize`,
+      const res = await fetch("http://localhost:8000/synthesize",
         {
           method: "POST",
           body: formData,
