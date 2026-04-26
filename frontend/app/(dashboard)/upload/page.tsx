@@ -25,34 +25,32 @@ export default function UploadPage() {
   const [result, setResult] = useState<any>(null);
 
   const handleAnalyze = async () => {
-    if (!file) {
-      alert("Upload file first.");
-      return;
-    }
+  if (!file) {
+    alert("Upload file first");
+    return;
+  }
 
-    setAnalyzing(true);
-    setCompleted(false);
+  setAnalyzing(true);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
 
-      const response = await fetch("http://127.0.0.1:8000/analyze", {
-        method: "POST",
-        body: formData,
-      });
+    const response = await fetch("http://127.0.0.1:8000/analyze", {
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await response.json();
+    const data = await response.json();
+    setResult(data);
 
-      setResult(data);
-      setCompleted(true);
-    } catch (error) {
-      console.error(error);
-      alert("Backend connection failed");
-    } finally {
-      setAnalyzing(false);
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Backend connection failed");
+  } finally {
+    setAnalyzing(false);
+  }
+};
 
   const currentStep = completed
     ? 4
