@@ -11,19 +11,14 @@ import {
   Check,
   CloudUpload,
   Loader2,
-  ShieldAlert,
-  Sparkles,
-  Download,
 } from "lucide-react";
 
 import { useState } from "react";
-import { API_URL } from "@/lib/constants";
 
 export default function UploadPage() {
   const [dragOver, setDragOver] = useState(false);
   const [uploaded, setUploaded] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
-  const [fairLoading, setFairLoading] = useState(false);
 
   const [file, setFile] = useState<File | null>(null);
 
@@ -31,10 +26,9 @@ export default function UploadPage() {
   const [protectedAttr, setProtectedAttr] = useState("");
 
   const [result, setResult] = useState<any>(null);
-  const [fairResult, setFairResult] = useState<any>(null);
 
   // ========================================
-  // ANALYZE DATA
+  // ANALYZE
   // ========================================
   const handleAnalyze = async () => {
     if (!file || !targetVar || !protectedAttr) {
@@ -43,26 +37,22 @@ export default function UploadPage() {
     }
 
     setAnalyzing(true);
-    setFairResult(null);
 
     try {
       const formData = new FormData();
+
       formData.append("file", file);
       formData.append("target", targetVar);
       formData.append("protected", protectedAttr);
 
-      const response = await fetch(`${API_URL}/analyze`, {
+      const response = await fetch("http://127.0.0.1:8000/analyze", {
         method: "POST",
         body: formData,
       });
 
       const data = await response.json();
 
-      if (data.error) {
-        alert(data.error);
-      } else {
-        setResult(data);
-      }
+      setResult(data);
     } catch (error) {
       console.error(error);
       alert("Backend connection failed");
@@ -71,65 +61,34 @@ export default function UploadPage() {
     }
   };
 
-  // ========================================
-  // MAKE FAIR DATASET
-  // ========================================
-  const handleMakeFair = async () => {
-    if (!file) return;
-
-    setFairLoading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch(`${API_URL}/download-synthesized`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        alert("Failed to generate fair dataset");
-        return;
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "fair_dataset.csv";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-
-      window.URL.revokeObjectURL(url);
-
-      setFairResult({
-        success: true,
-      });
-    } catch (error) {
-      console.error(error);
-      alert("Backend connection failed");
-    } finally {
-      setFairLoading(false);
-    }
-  };
-
-  const isUnfair =
-    result &&
-    result.biasScore !== undefined &&
-    Number(result.biasScore) > 0.4;
-
   return (
     <div className="max-w-5xl mx-auto">
+      {/* HEADER */}
       <PageHeader
         title="Upload & Analyze"
-        description="Upload dataset, detect bias, and make your data fair."
+        description="Upload your dataset and configure analysis parameters."
       />
 
-      {/* Upload */}
+      {/* UPLOAD BOX */}
       <div className="glass-card rounded-xl p-6 mb-6">
+        <div className="flex gap-1 mb-4">
+          {["Upload Data", "Settings", "Configure", "Complete"].map(
+            (step, i) => (
+              <span
+                key={step}
+                className={`text-[13px] md:text-[11px] font-medium px-2.5 py-1 rounded-full ${
+                  i === 0
+                    ? "bg-content/[0.1] text-content border border-content/[0.15]"
+                    : "text-content/25 bg-content/[0.03] border border-content/[0.04]"
+                }`}
+              >
+                {step}
+              </span>
+            )
+          )}
+        </div>
+
+        {/* DROP ZONE */}
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -147,17 +106,19 @@ export default function UploadPage() {
               setUploaded(true);
             }
           }}
-          className={`border-2 border-dashed rounded-xl py-14 px-6 text-center ${
+          className={`border-2 border-dashed rounded-xl py-12 px-4 sm:py-24 sm:px-12 text-center transition-all duration-300 cursor-pointer ${
             dragOver
-              ? "border-primary"
-              : "border-content/20"
+              ? "border-primary/50 bg-content/[0.03]"
+              : uploaded
+              ? "border-content/20 bg-content/[0.02]"
+              : "border-primary/30 hover:border-primary/50 hover:bg-content/[0.02]"
           }`}
         >
           <input
             type="file"
+            accept=".csv"
             hidden
             id="fileUpload"
-            accept=".csv,.xlsx,.xls"
             onChange={(e) => {
               const selected = e.target.files?.[0];
 
@@ -169,131 +130,204 @@ export default function UploadPage() {
           />
 
           <label htmlFor="fileUpload" className="cursor-pointer">
-            {uploaded ? (
-              <>
-                <Check className="w-12 h-12 mx-auto mb-4 text-green-500" />
-                <p className="font-semibold">{file?.name}</p>
-              </>
-            ) : (
-              <>
-                <CloudUpload className="w-12 h-12 mx-auto mb-4 text-content/50" />
-                <p>Drag file here or click upload</p>
-              </>
+            <div
+              className={`w-20 h-20 rounded-[3rem] mx-auto mb-4 flex items-center justify-center ${
+                uploaded ? "bg-content/[0.08]" : "bg-content/[0.06]"
+              }`}
+            >
+              {uploaded ? (
+                <Check className="w-12 h-12 text-content/70" />
+              ) : (
+                <CloudUpload className="w-12 h-12 text-content/60" />
+              )}
+            </div>
+
+            <p className="text-lg md:text-md font-medium text-content/70 mb-1">
+              {uploaded ? file?.name : "Drag & drop your CSV file here"}
+            </p>
+
+            <p className="text-md md:text-sm text-content/30">
+              Or click to browse. CSV files up to 100MB.
+            </p>
+
+            {!uploaded && (
+              <button className="mt-4 inline-flex items-center gap-2 text-md font-medium text-content/70 bg-content/[0.06] border border-content/[0.1] px-4 py-2 rounded-lg hover:bg-content/[0.1] transition-all">
+                <UploadIcon className="w-3.5 h-3.5" />
+                Browse Files
+              </button>
             )}
           </label>
         </div>
-
-        {/* Inputs */}
-        <div className="grid md:grid-cols-2 gap-4 mt-5">
-          <input
-            value={targetVar}
-            onChange={(e) => setTargetVar(e.target.value)}
-            placeholder="Target Column (Ex: hired)"
-            className="border rounded-lg px-4 py-3 bg-background"
-          />
-
-          <input
-            value={protectedAttr}
-            onChange={(e) => setProtectedAttr(e.target.value)}
-            placeholder="Protected Column (Ex: gender)"
-            className="border rounded-lg px-4 py-3 bg-background"
-          />
-        </div>
-
-        <button
-          onClick={handleAnalyze}
-          disabled={analyzing}
-          className="w-full mt-5 bg-cta text-cta-foreground rounded-xl py-3 font-semibold flex justify-center gap-2"
-        >
-          {analyzing ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Analyzing...
-            </>
-          ) : (
-            <>
-              Analyze Dataset
-              <ArrowRight className="w-4 h-4" />
-            </>
-          )}
-        </button>
       </div>
 
-      {/* Result */}
-      {result && (
-        <div className="grid md:grid-cols-2 gap-6">
+      {/* MAIN GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* LEFT */}
+        <div className="space-y-6">
+          {/* CONFIGURE */}
           <div className="glass-card rounded-xl p-6">
-            <h3 className="font-bold text-lg mb-4">
-              Dataset Summary
+            <h3 className="text-lg md:text-md font-semibold text-content mb-1">
+              Configure Analysis
             </h3>
 
-            <div className="space-y-2 text-content/70">
-              <p>Rows: {result.file_info?.rows}</p>
-              <p>Columns: {result.file_info?.columns}</p>
-              <p>Size: {result.file_info?.size_kb} KB</p>
-            </div>
-          </div>
-
-          <div className="glass-card rounded-xl p-6">
-            <h3 className="font-bold text-lg mb-4">
-              Bias Result
-            </h3>
-
-            <div className="space-y-2">
-              <p>Status: {result.biasStatus}</p>
-              <p>Bias Score: {result.biasScore}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* If Unfair */}
-      {isUnfair && (
-        <div className="glass-card rounded-xl p-6 mt-6 border border-red-400/20">
-          <div className="flex gap-3 items-start mb-4">
-            <ShieldAlert className="w-6 h-6 text-red-500" />
-            <div>
-              <h3 className="font-bold text-lg">
-                Dataset is Unfair
-              </h3>
-              <p className="text-content/60">
-                Bias detected in this dataset. You can generate a balanced fair dataset.
-              </p>
-            </div>
-          </div>
-
-          <button
-            onClick={handleMakeFair}
-            disabled={fairLoading}
-            className="w-full bg-cta text-cta-foreground rounded-xl py-3 font-semibold flex justify-center gap-2"
-          >
-            {fairLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Generating...
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4" />
-                Make Data Fair
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
-        </div>
-      )}
-
-      {/* Success */}
-      {fairResult?.success && (
-        <div className="glass-card rounded-xl p-6 mt-6">
-          <div className="flex items-center gap-3">
-            <Download className="w-5 h-5 text-green-500" />
-            <p className="font-medium">
-              Fair dataset downloaded successfully.
+            <p className="text-sm text-content/30 md:mb-5 mb-10">
+              Enter your column names manually
             </p>
+
+            <div className="space-y-4">
+              {/* TARGET */}
+              <div>
+                <label className="block text-lg md:text-sm font-medium text-content/50 mb-2">
+                  Target Variable
+                </label>
+
+                <input
+                  type="text"
+                  value={targetVar}
+                  onChange={(e) => setTargetVar(e.target.value)}
+                  placeholder="Ex: hired"
+                  className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-md md:text-sm text-content/80 focus:outline-none"
+                />
+              </div>
+
+              {/* PROTECTED */}
+              <div>
+                <label className="block text-lg md:text-sm font-medium text-content/50 mb-2">
+                  Protected Attribute
+                </label>
+
+                <input
+                  type="text"
+                  value={protectedAttr}
+                  onChange={(e) => setProtectedAttr(e.target.value)}
+                  placeholder="Ex: gender"
+                  className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-md md:text-sm text-content/80 focus:outline-none"
+                />
+              </div>
+
+              {/* BUTTON */}
+              <button
+                onClick={handleAnalyze}
+                disabled={
+                  analyzing || !uploaded || !targetVar || !protectedAttr
+                }
+                className="w-full inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50"
+              >
+                {analyzing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    Analyze & Detect Bias
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+              <button
+                onClick={handleAnalyze}
+                disabled={
+                  analyzing || !uploaded || !targetVar || !protectedAttr
+                }
+                className="w-full inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50"
+              >
+                {analyzing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    Synthesize data
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
+
+          {/* BEFORE CLEAN */}
+          {result && (
+            <div className="glass-card rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-content mb-4">
+                Before Clean
+              </h3>
+
+              <div className="space-y-2 text-content/70">
+                <p>Rows: {result.before_clean.rows}</p>
+                  <p>Columns: {result.before_clean.columns}</p>
+                  <p>Duplicate Rows: {result.before_clean.duplicate_rows}</p>
+                  <p>Rows With Missing Values: {result.before_clean.rows_with_missing_values}</p>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* RIGHT */}
+        <div className="space-y-6">
+          {/* ABOUT DATA */}
+          <div className="glass-card rounded-xl p-6">
+            <h3 className="text-lg md:text-sm font-semibold text-content mb-1">
+              About Your Data
+            </h3>
+
+            <p className="text-md md:text-sm text-content/30 mb-5">
+              Dataset summary and guidance
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+                <FileText className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Rows</span>
+                <p className="text-content/70">
+                  {result ? result.file_info.rows : "—"}
+                </p>
+              </div>
+
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+                <Columns className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Columns</span>
+                <p className="text-content/70">
+                  {result ? result.file_info.columns : "—"}
+                </p>
+              </div>
+
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+                <HardDrive className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Size</span>
+                <p className="text-content/70">
+                  {result ? `${result.file_info.size_kb} KB` : "—"}
+                </p>
+              </div>
+
+              <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4 sm:col-span-3">
+                <Lightbulb className="w-4 h-4 text-content/50 mb-2" />
+                <span className="text-xs text-content/50">Tip</span>
+                <p className="text-content/70">
+                  Make sure your data contains target and protected columns.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* AFTER CLEAN */}
+          {result && (
+            <div className="glass-card rounded-xl p-6">
+              <h3 className="text-lg font-semibold text-content mb-4">
+                After Clean
+              </h3>
+
+              <div className="space-y-2 text-content/70">
+                <p>Rows: {result.after_clean.rows}</p>
+                <p>Columns: {result.after_clean.columns}</p>
+                <p>Duplicate Rows: {result.after_clean.duplicate_rows}</p>
+                <p>Rows With Missing Values: {result.after_clean.rows_with_missing_values}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
