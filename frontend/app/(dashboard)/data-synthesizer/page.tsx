@@ -27,31 +27,32 @@ export default function UploadPage() {
   // ANALYZE
   // ========================================
   const handleAnalyze = async () => {
-    if (!file) {
-      alert("Upload file first.");
-      return;
-    }
+  if (!file) {
+    alert("Upload file first");
+    return;
+  }
 
-    setAnalyzing(true);
+  setAnalyzing(true);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+  try {
+    const formData = new FormData();
+    formData.append("file", file);   // MUST be 'file'
 
-      const response = await fetch("http://127.0.0.1:8000/analyze", {
-        method: "POST",
-        body: formData,
-      });
+    const response = await fetch("http://127.0.0.1:8000/analyze", {
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await response.json();
-      setResult(data);
-    } catch (error) {
-      console.error(error);
-      alert("Backend connection failed");
-    } finally {
-      setAnalyzing(false);
-    }
-  };
+    const data = await response.json();
+    setResult(data);
+
+  } catch (error) {
+    console.error(error);
+    alert("Backend connection failed");
+  } finally {
+    setAnalyzing(false);
+  }
+};
 
   return (
     <div className="max-w-5xl mx-auto">
