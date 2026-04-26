@@ -237,9 +237,10 @@ export default function UploadPage() {
 
               <div className="space-y-2 text-content/70">
                 <p>Rows: {result.before_clean.rows}</p>
-                <p>Columns: {result.before_clean.columns}</p>
-                <p>Duplicates: {result.before_clean.duplicates}</p>
-                <p>Missing Values: {result.before_clean.missing_values}</p>
+                  <p>Columns: {result.before_clean.columns}</p>
+                  <p>Duplicate Rows: {result.after_clean.duplicate_rows}</p>
+                  <p>Rows With Missing Values: {result.after_clean.rows_with_missing_values}</p>
+                  <p>Total Missing Cells: {result.after_clean.total_missing_cells}</p>
               </div>
             </div>
           )}
