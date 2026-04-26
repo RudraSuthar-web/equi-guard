@@ -28,30 +28,20 @@ export default function UploadPage() {
   // ========================================
   const handleAnalyze = async () => {
   if (!file) {
-    alert("Upload file first");
+    alert("Please upload a file");
     return;
   }
 
-  setAnalyzing(true);
+  const formData = new FormData();
+  formData.append("file", file); // MUST be exactly "file"
 
-  try {
-    const formData = new FormData();
-    formData.append("file", file);   // MUST be 'file'
+  const res = await fetch("http://127.0.0.1:8000/analyze", {
+    method: "POST",
+    body: formData,
+  });
 
-    const response = await fetch("http://127.0.0.1:8000/analyze", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-    setResult(data);
-
-  } catch (error) {
-    console.error(error);
-    alert("Backend connection failed");
-  } finally {
-    setAnalyzing(false);
-  }
+  const data = await res.json();
+  console.log(data);
 };
 
   return (
