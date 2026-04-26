@@ -231,11 +231,11 @@ export default function DashboardPage() {
             {data.biasMetrics.map((m: any) => (
               <div key={m.metric} className="flex items-center justify-between">
                 <div>
-                  <p className="text-lg md:text-md text-content/60">{m.metric}</p>
+                  <p className="text-lg md:text-sm text-content/60">{m.metric}</p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-lg md:text-md font-semibold text-content/40">{m.before || m.value}</span>
+                    <span className="text-lg md:text-sm font-semibold text-content/40">{m.before || m.value}</span>
                     <ArrowRight className="w-3 h-3 text-content/20" />
-                    <span className="text-lg md:text-md font-semibold text-content">{m.after}</span>
+                    <span className="text-lg md:text-sm font-semibold text-content">{m.after}</span>
                   </div>
                 </div>
                 <span className="text-[13px] md:text-[10px] font-medium uppercase tracking-wider text-content/70 bg-content/[0.06] px-2 py-0.5 rounded-full">{m.status}</span>

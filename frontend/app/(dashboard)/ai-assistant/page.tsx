@@ -348,7 +348,7 @@ export default function AIAssistantPage() {
               <div className="absolute inset-0 z-10 bg-background/60 backdrop-blur-[2px] flex items-center justify-center p-4">
                 <button
                   onClick={handleSignOut}
-                  className="bg-content text-background px-6 py-2.5 rounded-full text-md md:text-sm font-bold flex items-center gap-2 shadow-xl shadow-content/20 hover:scale-105 transition-transform"
+                  className="bg-content text-background px-6 py-2.5 rounded-full text-md md:text-sm font-bold flex items-center gap-2 hover:scale-105 hover:bg-primary hover:text-white transition-all cursor-pointer duration-300 ease-in-out" 
                 >
                   <Bot className="w-4 h-4" />
                   Sign up to use EquiGuard Assistant
