@@ -211,7 +211,7 @@ export default function UploadPage() {
                 disabled={
                   analyzing || !uploaded || !targetVar || !protectedAttr
                 }
-                className="w-full inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50"
+                className="w-50% inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50"
               >
                 {analyzing ? (
                   <>
@@ -230,7 +230,7 @@ export default function UploadPage() {
                 disabled={
                   analyzing || !uploaded || !targetVar || !protectedAttr
                 }
-                className="w-full inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50"
+                className="w-50% inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50"
               >
                 {analyzing ? (
                   <>
