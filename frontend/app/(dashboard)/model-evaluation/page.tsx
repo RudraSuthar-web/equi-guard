@@ -8,7 +8,6 @@ import {
   Activity,
   ArrowRight,
   HelpCircle,
-  Loader2,
   CloudUpload,
   Check,
 } from "lucide-react";
@@ -32,11 +31,7 @@ export default function ModelEvaluationPage() {
   const cr = contentRgb;
 
   const [tourRun, setTourRun] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const [data, setData] = useState<any>(null);
-
-  // FILE STATES
   const [datasetFile, setDatasetFile] = useState<File | null>(null);
   const [outputFile, setOutputFile] = useState<File | null>(null);
 
@@ -44,42 +39,42 @@ export default function ModelEvaluationPage() {
   const [outputUploaded, setOutputUploaded] = useState(false);
 
   // ============================
-  // API CALL
+  // STATIC DEMO DATA (NO BACKEND)
   // ============================
-  const handleCompare = async () => {
-    if (!datasetFile || !outputFile) {
-      alert("Upload both dataset and model output");
-      return;
-    }
+  const data = {
+    stats: {
+      overallAccuracy: "82.4%",
+      balancedAccuracy: "76.1%",
+      aucScore: "0.84",
+    },
 
-    setLoading(true);
+    overallFairness: 0.73,
 
-    try {
-      const formData = new FormData();
-      formData.append("dataset", datasetFile);
-      formData.append("output", outputFile);
+    accuracyByGroup: [
+      { group: "Male", accuracy: 88 },
+      { group: "Female", accuracy: 64 },
+      { group: "Non-Binary", accuracy: 58 },
+      { group: "Asian", accuracy: 81 },
+      { group: "Black", accuracy: 61 },
+      { group: "Hispanic", accuracy: 66 },
+      { group: "White", accuracy: 85 },
+    ],
 
-      const res = await fetch("http://localhost:8000/compare-model", {
-        method: "POST",
-        body: formData,
-      });
+    performanceGap: "24%",
+    bestGroup: "Male (88%)",
+    worstGroup: "Non-Binary (58%)",
 
-      const result = await res.json();
-
-      if (result.error) {
-        alert(result.error);
-        return;
-      }
-
-      setData(result);
-    } catch (err) {
-      console.error(err);
-      alert("Comparison failed");
-    } finally {
-      setLoading(false);
-    }
+    recommendations: [
+      "Model shows moderate bias across demographic groups",
+      "Apply re-sampling or SMOTE for imbalance correction",
+      "Introduce fairness-aware loss function",
+      "Calibrate predictions across sensitive groups",
+    ],
   };
 
+  // ============================
+  // TOOLTIP
+  // ============================
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload?.length) {
       return (
@@ -93,15 +88,6 @@ export default function ModelEvaluationPage() {
     return null;
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-10 h-10 animate-spin mb-4" />
-        <p>Comparing model performance...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-7xl mx-auto">
       <AppTour
@@ -110,9 +96,10 @@ export default function ModelEvaluationPage() {
         onFinish={() => setTourRun(false)}
       />
 
+      {/* HEADER */}
       <PageHeader
         title="Model Evaluation"
-        description="Compare model predictions with actual dataset"
+        description="Compare model predictions with dataset fairness analysis"
         action={
           <button onClick={() => setTourRun(true)}>
             <HelpCircle />
@@ -120,24 +107,15 @@ export default function ModelEvaluationPage() {
         }
       />
 
-      {/* ================= UPLOAD SECTION ================= */}
+      {/* ================= UPLOAD UI ================= */}
       <div className="glass-card rounded-xl p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">
-          Compare Model Output
+          Upload Files (Demo UI)
         </h3>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* DATASET */}
-          <div
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              const f = e.dataTransfer.files[0];
-              setDatasetFile(f);
-              setDatasetUploaded(true);
-            }}
-            className="border-2 border-dashed rounded-xl p-6 text-center"
-          >
+          <div className="border-2 border-dashed rounded-xl p-6 text-center">
             <input
               hidden
               type="file"
@@ -157,7 +135,7 @@ export default function ModelEvaluationPage() {
                   <Check className="mx-auto text-green-500 mb-2" />
                   <p className="text-sm">{datasetFile?.name}</p>
                   <p className="text-xs text-content/40">
-                    Dataset
+                    Dataset Uploaded
                   </p>
                 </>
               ) : (
@@ -170,16 +148,7 @@ export default function ModelEvaluationPage() {
           </div>
 
           {/* OUTPUT */}
-          <div
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              const f = e.dataTransfer.files[0];
-              setOutputFile(f);
-              setOutputUploaded(true);
-            }}
-            className="border-2 border-dashed rounded-xl p-6 text-center"
-          >
+          <div className="border-2 border-dashed rounded-xl p-6 text-center">
             <input
               hidden
               type="file"
@@ -199,7 +168,7 @@ export default function ModelEvaluationPage() {
                   <Check className="mx-auto text-green-500 mb-2" />
                   <p className="text-sm">{outputFile?.name}</p>
                   <p className="text-xs text-content/40">
-                    Model Output
+                    Model Output Uploaded
                   </p>
                 </>
               ) : (
@@ -212,98 +181,93 @@ export default function ModelEvaluationPage() {
           </div>
         </div>
 
-        <button
-          onClick={handleCompare}
-          className="mt-6 w-full bg-cta text-cta-foreground py-3 rounded-xl font-semibold flex items-center justify-center gap-2"
-        >
-          Compare Model vs Actual
+        <button className="mt-6 w-full bg-cta text-cta-foreground py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
+          Compare Model vs Dataset
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
 
-      {/* ================= RESULTS ================= */}
-      {!data ? null : (
-        <>
-          {/* METRICS */}
-          <div className="glass-card rounded-xl p-6 mb-6">
-            <div className="grid md:grid-cols-4 gap-4">
-              <StatCard
-                label="Overall Accuracy"
-                value={data.stats.overallAccuracy}
-                icon={Target}
-              />
-              <StatCard
-                label="Balanced Accuracy"
-                value={data.stats.balancedAccuracy}
-                icon={Scale}
-              />
-              <StatCard
-                label="AUC Score"
-                value={data.stats.aucScore}
-                icon={Activity}
-              />
-              <StatCard
-                label="Fairness"
-                value={data.overallFairness}
-                icon={Scale}
-              />
-            </div>
+      {/* ================= METRICS ================= */}
+      <div className="glass-card rounded-xl p-6 mb-6">
+        <div className="grid md:grid-cols-4 gap-4">
+          <StatCard
+            label="Overall Accuracy"
+            value={data.stats.overallAccuracy}
+            icon={Target}
+          />
+          <StatCard
+            label="Balanced Accuracy"
+            value={data.stats.balancedAccuracy}
+            icon={Scale}
+          />
+          <StatCard
+            label="AUC Score"
+            value={data.stats.aucScore}
+            icon={Activity}
+          />
+          <StatCard
+            label="Fairness Score"
+            value={data.overallFairness}
+            icon={Scale}
+          />
+        </div>
+      </div>
+
+      {/* ================= CHART ================= */}
+      <div className="glass-card rounded-xl p-6 mb-6">
+        <h3 className="mb-4 font-semibold">
+          Accuracy by Group
+        </h3>
+
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={data.accuracyByGroup}>
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke={`rgba(${cr},0.1)`}
+            />
+            <XAxis dataKey="group" />
+            <YAxis domain={[0, 100]} />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar
+              dataKey="accuracy"
+              fill="var(--primary)"
+              radius={[6, 6, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* ================= INSIGHTS ================= */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="glass-card p-6 rounded-xl">
+          <h3 className="mb-4 font-semibold">
+            Performance Gap
+          </h3>
+          <p className="text-4xl font-bold">
+            {data.performanceGap}
+          </p>
+          <p className="text-sm text-content/40 mt-2">
+            Gap between best and worst performing groups
+          </p>
+
+          <div className="mt-4 text-sm">
+            <p>Best: {data.bestGroup}</p>
+            <p>Worst: {data.worstGroup}</p>
           </div>
+        </div>
 
-          {/* CHART */}
-          <div className="glass-card rounded-xl p-6 mb-6">
-            <h3 className="mb-4 font-semibold">
-              Accuracy by Group
-            </h3>
+        <div className="glass-card p-6 rounded-xl">
+          <h3 className="mb-4 font-semibold">
+            Recommendations
+          </h3>
 
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={data.accuracyByGroup}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke={`rgba(${cr},0.1)`}
-                />
-                <XAxis dataKey="group" />
-                <YAxis domain={[0, 100]} />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar
-                  dataKey="accuracy"
-                  fill="var(--primary)"
-                  radius={[6, 6, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* GAP + RECOMMENDATION */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="glass-card p-6 rounded-xl">
-              <h3 className="mb-4 font-semibold">
-                Performance Gap
-              </h3>
-              <p className="text-4xl font-bold">
-                {data.performanceGap}
-              </p>
-              <p className="text-sm text-content/40 mt-2">
-                Gap between best and worst groups
-              </p>
-            </div>
-
-            <div className="glass-card p-6 rounded-xl">
-              <h3 className="mb-4 font-semibold">
-                Recommendations
-              </h3>
-
-              {data.recommendations.map(
-                (r: string, i: number) => (
-                  <p key={i} className="text-sm mb-2">
-                    • {r}
-                  </p>
-                )
-              )}
-            </div>
-          </div>
-        </>
-      )}
+          {data.recommendations.map((r, i) => (
+            <p key={i} className="text-sm mb-2">
+              • {r}
+            </p>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
