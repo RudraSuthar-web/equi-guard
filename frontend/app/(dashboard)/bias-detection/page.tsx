@@ -7,11 +7,8 @@ import {
   ShieldAlert,
   ArrowRight,
   AlertTriangle,
-  Eye,
-  Filter,
   HelpCircle,
   Loader2,
-  Upload,
   Check,
   CloudUpload,
 } from "lucide-react";
@@ -39,19 +36,16 @@ export default function BiasDetectionPage() {
   const [tourRun, setTourRun] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // upload states
   const [file, setFile] = useState<File | null>(null);
   const [uploaded, setUploaded] = useState(false);
   const [dragOver, setDragOver] = useState(false);
 
-  // inputs
   const [target, setTarget] = useState("");
   const [protectedCol, setProtectedCol] = useState("");
 
-  // result
   const [data, setData] = useState<any>(null);
 
-  // demo mode
+  // Demo mode
   useEffect(() => {
     if (isDemo) {
       setData({
@@ -89,9 +83,7 @@ export default function BiasDetectionPage() {
     }
   }, [isDemo]);
 
-  // ===============================
-  // API CALL
-  // ===============================
+  // Analyze API Call
   const handleAnalyze = async () => {
     if (!file || !target || !protectedCol) {
       alert("Upload file and fill all fields");
@@ -161,6 +153,7 @@ export default function BiasDetectionPage() {
         </div>
       );
     }
+
     return null;
   };
 
@@ -196,9 +189,7 @@ export default function BiasDetectionPage() {
         }
       />
 
-      {/* ===================================== */}
-      {/* NEW UPLOAD SECTION */}
-      {/* ===================================== */}
+      {/* Upload Section */}
       <div className="glass-card rounded-xl p-6 mt-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">
           Upload Dataset
@@ -280,10 +271,6 @@ export default function BiasDetectionPage() {
         </button>
       </div>
 
-      {/* ===================================== */}
-      {/* ORIGINAL DESIGN BELOW */}
-      {/* ===================================== */}
-
       {!data ? (
         <div className="glass-card rounded-xl p-10 text-center">
           <ShieldAlert className="w-12 h-12 mx-auto mb-4 text-content/20" />
@@ -296,8 +283,9 @@ export default function BiasDetectionPage() {
         </div>
       ) : (
         <div className="grid lg:grid-cols-3 gap-6">
+          {/* LEFT SIDE */}
           <div className="lg:col-span-2 space-y-6">
-            {/* SCORE */}
+            {/* Score */}
             <div className="glass-card rounded-xl p-6">
               <div className="flex items-center gap-6">
                 <div className="relative">
@@ -324,7 +312,9 @@ export default function BiasDetectionPage() {
                       strokeLinecap="round"
                       strokeDasharray={`${2 * Math.PI * 52}`}
                       strokeDashoffset={`${
-                        2 * Math.PI * 52 *
+                        2 *
+                        Math.PI *
+                        52 *
                         (1 - data.biasScore)
                       }`}
                     />
@@ -348,7 +338,7 @@ export default function BiasDetectionPage() {
               </div>
             </div>
 
-            {/* CHART */}
+            {/* Chart */}
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold mb-4">
                 Selection Rate by Group
@@ -383,8 +373,9 @@ export default function BiasDetectionPage() {
             </div>
           </div>
 
-          {/* RIGHT */}
+          {/* RIGHT SIDE */}
           <div className="space-y-6">
+            {/* Insights */}
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold mb-4">
                 Key Insights
@@ -407,6 +398,7 @@ export default function BiasDetectionPage() {
               </div>
             </div>
 
+            {/* Metrics */}
             <div className="glass-card rounded-xl p-6">
               <h3 className="text-lg font-semibold mb-4">
                 Bias Metrics
@@ -422,6 +414,37 @@ export default function BiasDetectionPage() {
                   </div>
                 )
               )}
+            </div>
+
+            {/* Top Features */}
+            <div className="glass-card rounded-xl p-6">
+              <h3 className="text-lg font-semibold mb-4">
+                Top Biased Features
+              </h3>
+
+              <div className="space-y-4">
+                {data.topBiasedFeatures?.map(
+                  (item: any, i: number) => (
+                    <div key={i}>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>{item.name}</span>
+                        <span>{item.severity}</span>
+                      </div>
+
+                      <div className="w-full h-2 bg-content/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary"
+                          style={{
+                            width: `${
+                              item.severity * 100
+                            }%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
         </div>
