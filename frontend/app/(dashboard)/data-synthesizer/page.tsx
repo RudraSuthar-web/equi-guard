@@ -40,7 +40,7 @@ export default function UploadPage() {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await fetch("http://127.0.0.1:8000/analyze", {
+      const response = await fetch("http://127.0.0.1:8000/synthesize", {
         method: "POST",
         body: formData,
       });
@@ -68,7 +68,7 @@ export default function UploadPage() {
       formData.append("file", file);
 
       const response = await fetch(
-        "http://127.0.0.1:8000/download-cleaned",
+        "http://127.0.0.1:8000/download-synthesized",
         {
           method: "POST",
           body: formData,
