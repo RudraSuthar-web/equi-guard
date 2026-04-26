@@ -12,6 +12,7 @@ import {
   CloudUpload,
   Loader2,
   Download,
+  Sparkles,
 } from "lucide-react";
 
 import { useState } from "react";
@@ -19,22 +20,21 @@ import { useState } from "react";
 export default function UploadPage() {
   const [dragOver, setDragOver] = useState(false);
   const [uploaded, setUploaded] = useState(false);
-  const [analyzing, setAnalyzing] = useState(false);
-  const [downloading, setDownloading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<any>(null);
 
-  // ========================================
-  // ANALYZE
-  // ========================================
+  // =====================================
+  // SYNTHESIZE DATA
+  // =====================================
   const handleAnalyze = async () => {
     if (!file) {
       alert("Please upload file first.");
       return;
     }
 
-    setAnalyzing(true);
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -51,17 +51,15 @@ export default function UploadPage() {
       console.error(error);
       alert("Backend connection failed");
     } finally {
-      setAnalyzing(false);
+      setLoading(false);
     }
   };
 
-  // ========================================
-  // DOWNLOAD CLEAN FILE
-  // ========================================
+  // =====================================
+  // DOWNLOAD SYNTHESIZED FILE
+  // =====================================
   const handleDownload = async () => {
     if (!file) return;
-
-    setDownloading(true);
 
     try {
       const formData = new FormData();
@@ -76,23 +74,19 @@ export default function UploadPage() {
       );
 
       const blob = await response.blob();
-
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
 
-      link.href = url;
-      link.download = "cleaned_dataset.csv";
-
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "balanced_dataset.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
 
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error(error);
-      alert("Download failed");
-    } finally {
-      setDownloading(false);
+      alert("Download failed.");
     }
   };
 
@@ -100,11 +94,11 @@ export default function UploadPage() {
     <div className="max-w-6xl mx-auto">
       {/* HEADER */}
       <PageHeader
-        title="Upload & Analyze"
-        description="Upload your dataset and get instant analysis."
+        title="Bias Synthesis Tool"
+        description="Upload dataset and generate balanced synthetic data."
       />
 
-      {/* TOP SECTION */}
+      {/* TOP GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* UPLOAD */}
         <div className="glass-card rounded-xl p-6">
@@ -122,10 +116,10 @@ export default function UploadPage() {
               e.preventDefault();
               setDragOver(false);
 
-              const droppedFile = e.dataTransfer.files[0];
+              const dropped = e.dataTransfer.files[0];
 
-              if (droppedFile) {
-                setFile(droppedFile);
+              if (dropped) {
+                setFile(dropped);
                 setUploaded(true);
               }
             }}
@@ -170,91 +164,71 @@ export default function UploadPage() {
               </p>
 
               <p className="text-sm text-content/30">
-                CSV / Excel files supported
+                CSV / Excel supported
               </p>
 
               {!uploaded && (
                 <button className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-content/70 bg-content/[0.06] border border-content/[0.1] px-4 py-2 rounded-lg hover:bg-content/[0.1] transition-all">
                   <UploadIcon className="w-4 h-4" />
-                  Browse Files
+                  Browse File
                 </button>
               )}
             </label>
           </div>
 
-          {/* BUTTONS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
-            <button
-              onClick={handleAnalyze}
-              disabled={analyzing || !uploaded}
-              className="inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground px-5 py-3 rounded-xl font-semibold hover:bg-cta/90 disabled:opacity-50"
-            >
-              {analyzing ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                <>
-                  Analyze
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={handleDownload}
-              disabled={!result || downloading}
-              className="inline-flex items-center justify-center gap-2 bg-content/[0.08] text-content px-5 py-3 rounded-xl font-semibold hover:bg-content/[0.12] disabled:opacity-50"
-            >
-              {downloading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Downloading...
-                </>
-              ) : (
-                <>
-                  Download Clean File
-                  <Download className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </div>
+          {/* BUTTON */}
+          <button
+            onClick={handleAnalyze}
+            disabled={loading || !uploaded}
+            className="w-full mt-5 inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground px-5 py-3 rounded-xl font-semibold hover:bg-cta/90 disabled:opacity-50"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                Generate Balanced Dataset
+                <Sparkles className="w-4 h-4" />
+              </>
+            )}
+          </button>
         </div>
 
-        {/* ABOUT DATA */}
+        {/* DATA INFO */}
         <div className="glass-card rounded-xl p-6">
           <h3 className="text-lg font-semibold text-content mb-1">
-            About Your Data
+            Dataset Summary
           </h3>
 
           <p className="text-sm text-content/30 mb-5">
-            Dataset summary and insights
+            Automatic detection of protected + target columns
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="bg-content/[0.02] rounded-lg p-4 border border-content/[0.06]">
               <FileText className="w-4 h-4 text-content/50 mb-2" />
               <span className="text-xs text-content/50">Rows</span>
-              <p>{result ? result.file_info.rows : "—"}</p>
+              <p>{result ? result.rows : "—"}</p>
             </div>
 
-            <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+            <div className="bg-content/[0.02] rounded-lg p-4 border border-content/[0.06]">
               <Columns className="w-4 h-4 text-content/50 mb-2" />
               <span className="text-xs text-content/50">Columns</span>
-              <p>{result ? result.file_info.columns : "—"}</p>
+              <p>{result ? result.columns : "—"}</p>
             </div>
 
-            <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4">
+            <div className="bg-content/[0.02] rounded-lg p-4 border border-content/[0.06]">
               <HardDrive className="w-4 h-4 text-content/50 mb-2" />
-              <span className="text-xs text-content/50">Size</span>
-              <p>{result ? `${result.file_info.size_kb} KB` : "—"}</p>
+              <span className="text-xs text-content/50">Missing</span>
+              <p>{result ? result.missing : "—"}</p>
             </div>
 
-            <div className="bg-content/[0.02] border border-content/[0.06] rounded-lg p-4 sm:col-span-3">
+            <div className="bg-content/[0.02] rounded-lg p-4 border border-content/[0.06]">
               <Lightbulb className="w-4 h-4 text-content/50 mb-2" />
-              <span className="text-xs text-content/50">Tip</span>
-              <p>Analyze first, then download cleaned dataset.</p>
+              <span className="text-xs text-content/50">Duplicates</span>
+              <p>{result ? result.duplicate : "—"}</p>
             </div>
           </div>
         </div>
@@ -262,34 +236,54 @@ export default function UploadPage() {
 
       {/* RESULT */}
       {result && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="glass-card rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-4">Before Clean</h3>
+        <div className="glass-card rounded-xl p-6">
+          <h3 className="text-lg font-semibold mb-4">
+            Synthesis Result
+          </h3>
 
-            <div className="space-y-2">
-              <p>Rows: {result.before_clean.rows}</p>
-              <p>Columns: {result.before_clean.columns}</p>
-              <p>Duplicate Rows: {result.before_clean.duplicate_rows}</p>
-              <p>
-                Missing Rows:{" "}
-                {result.before_clean.rows_with_missing_values}
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-content/[0.02] rounded-lg p-4">
+              <p className="text-sm text-content/40">Protected</p>
+              <p>{result.protected}</p>
+            </div>
+
+            <div className="bg-content/[0.02] rounded-lg p-4">
+              <p className="text-sm text-content/40">Target</p>
+              <p>{result.target}</p>
+            </div>
+
+            <div className="bg-content/[0.02] rounded-lg p-4">
+              <p className="text-sm text-content/40">Rows Added</p>
+              <p>{result.afterRows - result.beforeRows}</p>
+            </div>
+
+            <div className="bg-content/[0.02] rounded-lg p-4">
+              <p className="text-sm text-content/40">Fairness Before</p>
+              <p>{result.fairnessBefore}%</p>
+            </div>
+
+            <div className="bg-content/[0.02] rounded-lg p-4">
+              <p className="text-sm text-content/40">Fairness After</p>
+              <p>{result.fairnessAfter}%</p>
+            </div>
+
+            <div className="bg-content/[0.02] rounded-lg p-4">
+              <p className="text-sm text-content/40">Improvement</p>
+              <p>+{result.improvement}%</p>
             </div>
           </div>
 
-          <div className="glass-card rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-4">After Clean</h3>
+          <p className="text-content/70 mb-5">
+            {result.recommendation}
+          </p>
 
-            <div className="space-y-2">
-              <p>Rows: {result.after_clean.rows}</p>
-              <p>Columns: {result.after_clean.columns}</p>
-              <p>Duplicate Rows: {result.after_clean.duplicate_rows}</p>
-              <p>
-                Missing Rows:{" "}
-                {result.after_clean.rows_with_missing_values}
-              </p>
-            </div>
-          </div>
+          <button
+            onClick={handleDownload}
+            className="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-xl font-semibold hover:bg-green-700"
+          >
+            <Download className="w-4 h-4" />
+            Download Balanced Dataset
+          </button>
         </div>
       )}
     </div>
