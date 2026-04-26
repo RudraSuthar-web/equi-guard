@@ -176,7 +176,7 @@ export default function UploadPage() {
 
             <div className="space-y-4">
               {/* TARGET */}
-              <div>
+              {/* <div>
                 <label className="block text-lg md:text-sm font-medium text-content/50 mb-2">
                   Target Variable
                 </label>
@@ -188,10 +188,10 @@ export default function UploadPage() {
                   placeholder="Ex: hired"
                   className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-md md:text-sm text-content/80 focus:outline-none"
                 />
-              </div>
+              </div> */}
 
               {/* PROTECTED */}
-              <div>
+              {/* <div>
                 <label className="block text-lg md:text-sm font-medium text-content/50 mb-2">
                   Protected Attribute
                 </label>
@@ -203,7 +203,7 @@ export default function UploadPage() {
                   placeholder="Ex: gender"
                   className="w-full bg-background border border-content/[0.08] rounded-lg px-3 py-2.5 text-md md:text-sm text-content/80 focus:outline-none"
                 />
-              </div>
+              </div> */}
 
               {/* BUTTON */}
               <button onClick={handleAnalyze} disabled={ analyzing || !uploaded || !targetVar || !protectedAttr } className="w-50% inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50" > {analyzing ? ( <> <Loader2 className="w-4 h-4 animate-spin" /> Analyzing... </> ) : ( <> Analyze & Detect Bias <ArrowRight className="w-4 h-4" /> </> )} </button> <button onClick={handleAnalyze} disabled={ analyzing || !uploaded || !targetVar || !protectedAttr } className="w-50% inline-flex items-center justify-center gap-2 bg-cta text-cta-foreground text-lg md:text-md font-semibold px-5 py-3 rounded-xl transition-all hover:bg-cta/90 shadow-lg shadow-content/[0.05] mt-2 disabled:opacity-50" > {analyzing ? ( <> <Loader2 className="w-4 h-4 animate-spin" /> Analyzing... </> ) : ( <> Synthesize data <ArrowRight className="w-4 h-4" /> </> )} </button>
