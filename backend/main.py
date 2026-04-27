@@ -6,8 +6,39 @@ from typing import List, Optional
 import google.generativeai as genai
 from dotenv import load_dotenv
 
+from new_analysis import router as file_router
+from bias_analysis import router as bias_router
+from synthesize import router as synthesize_router
+
+from db import engine
+from models import Base
+
+# fastapi backend connection
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register APIs
+app.include_router(file_router) # route for the data analysis and cleaning process
+app.include_router(bias_router) # route for the detection of available bias
+app.include_router(synthesize_router) # route for the creating balanced datasset
+
+
+@app.get("/")
+def home():
+    return {"message": "Backend Running"}
 # Load environment variables
 load_dotenv()
+# fastapi connection over
+
 
 # Configure Gemini API
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
