@@ -43,7 +43,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # Register APIs
 app.include_router(file_router) # route for the data analysis and cleaning process
 app.include_router(bias_router) # route for the detection of available bias
