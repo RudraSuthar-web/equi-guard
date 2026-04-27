@@ -5,6 +5,9 @@ from pydantic import BaseModel
 from typing import List, Optional
 import google.generativeai as genai
 from dotenv import load_dotenv
+from new_analysis import router as file_router
+from bias_analysis import router as bias_router
+from synthesize import router as synthesize_router
 
 # Load environment variables
 load_dotenv()
@@ -38,6 +41,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Register APIs
+app.include_router(file_router)
+app.include_router(bias_router)
+app.include_router(synthesize_router)
 
 class ResumeInput(BaseModel):
     resume_text: str
