@@ -6,13 +6,8 @@ from typing import List, Optional
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-from new_analysis import router as file_router
-from bias_analysis import router as bias_router
-from synthesize import router as synthesize_router
-
-from db import engine
-from models import Base
-
+# Load environment variables
+load_dotenv()
 
 # Configure Gemini API
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -24,6 +19,9 @@ model = genai.GenerativeModel(
     'gemini-2.5-flash-lite',
     system_instruction="You are EquiGuard's AI Assistant. Provide short, direct, and factual answers about bias detection and fairness. Use Markdown formatting: use bullet points on new lines for lists, and use bold text for key terms. Avoid long paragraphs but ensure points are separated by new lines for readability. Do not hallucinate."
 )
+
+
+
 
 app = FastAPI(title="EquiGuard API")
 
@@ -100,6 +98,7 @@ async def chat(input: ChatInput):
         if "401" in error_msg or "API_KEY_INVALID" in error_msg:
             return {"role": "assistant", "content": "I'm sorry, but the Gemini API key provided is invalid. Please check the backend .env file."}
         raise HTTPException(status_code=500, detail=error_msg)
+
 
 @app.get("/logs")
 def get_logs():
