@@ -16,27 +16,10 @@ from models import Base
 # fastapi backend connection
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Register APIs
-app.include_router(file_router) # route for the data analysis and cleaning process
-app.include_router(bias_router) # route for the detection of available bias
-app.include_router(synthesize_router) # route for the creating balanced datasset
 
 
-@app.get("/")
-def home():
-    return {"message": "Backend Running"}
 # Load environment variables
-load_dotenv()
+# load_dotenv()
 # fastapi connection over
 
 
@@ -82,6 +65,13 @@ class ChatInput(BaseModel):
 @app.get("/")
 def root():
     return {"status": "EquiGuard API is running"}
+
+# Register APIs
+app.include_router(file_router) # route for the data analysis and cleaning process
+app.include_router(bias_router) # route for the detection of available bias
+app.include_router(synthesize_router) # route for the creating balanced datasset
+
+
 
 @app.post("/evaluate")
 def evaluate(input: ResumeInput):
